@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="FileSearchMvvm.Views.ModalOverlays.SpecialImpositionSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FileSearchMvvm.Views.ModalOverlays"
+             xmlns:utilities="clr-namespace:FileSearchMvvm.Views.Utilities"
+             xmlns:vm="clr-namespace:FileSearchMvvm.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="550" d:DesignWidth="600"
+             DataContext="{Binding Source={x:Static vm:ViewModelLocator.MyViewModel}}">
+    <UserControl.Resources>
+        <!--<utilities:PageRangeValidationRule x:Key="pageRangeValidationRule"/>-->
+        <ResourceDictionary Source="..\StyleSheet.xaml"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid x:Name="selectImpositionCircuitCourtOutsideGrid" Background="Black" Opacity="0.5">
+            <Grid.InputBindings>
+                <MouseBinding Gesture="LeftClick" Command="{Binding RunCloseModalContentOverlay}"/>
+            </Grid.InputBindings>
+        </Grid>
+        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="10" Background="White"
+                Margin="125 100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="10">
+            <StackPanel>
+                <TextBlock HorizontalAlignment="Center" Text="PDF Utilities" 
+                           FontSize="18" FontWeight="Bold" Margin="6" Padding="6"></TextBlock>
+                <!--Is Cover: 11x19 imposition, Is App or 8.5x11 doc: make pages same size ???-->
+                <GroupBox Header="Circuit Court Documents" Padding="5">
+                    <StackPanel>
+                        <Button Command="{Binding RunImposeCircuitCourtCover_11x19}" Style="{StaticResource PdfTabButtonStyle}">
+                            Impose Circuit Court Cover on 11" x 19" Page
+                        </Button>
+                        <Button Command="{Binding RunImposeCircuitCourtCover_8pt5x23}" Style="{StaticResource PdfTabButtonStyle}">
+                            Impose Circuit Court Cover on 8.5" x 23" Page
+                        </Button>                        
+                        <Button Command="{Binding RunImposeCircuitCourtBrief}" 
+                            Style="{StaticResource PdfTabButtonStyle}">
+                            Shrink/Enlarge All Pages to 8.5 x 11 (Letter)
+                        </Button>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Extract pages" Padding="5">
+                    <UniformGrid Rows="2">
+                        <Button Command="{Binding RunExtractPagesFromPdfDocument}" 
+                            Style="{StaticResource PdfTabButtonStyle}" Margin="3">
+                            Extract first page (or type in page range below)
+                        </Button>
+
+                        <UniformGrid Columns="2">
+                            <DockPanel LastChildFill="True">
+                                <Label Content="First page:" Foreground="DarkBlue" Margin="3"/>
+                                <TextBox VerticalContentAlignment="Center" 
+                                         HorizontalContentAlignment="Center"
+                                         BorderBrush="Transparent" Margin="3">
+                                    <TextBox.Text>
+                                        <Binding Path="PdfPageToExtract_First" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                                            <Binding.ValidationRules>
+                                                <utilities:PageRangeValidationRule Min="1" Max="1000"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </DockPanel>
+                            <DockPanel LastChildFill="True">
+                                <Label Content="Last page:" Foreground="DarkBlue" Margin="3"/>
+                                <TextBox VerticalContentAlignment="Center" 
+                                         HorizontalContentAlignment="Center"
+                                         BorderBrush="Transparent" Margin="3">
+                                    <TextBox.Text>
+                                        <Binding Path="PdfPageToExtract_Last" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                                            <Binding.ValidationRules>
+                                                <utilities:PageRangeValidationRule Min="1" Max="1000"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </DockPanel>
+                        </UniformGrid>
+                    </UniformGrid>
+                </GroupBox>
+                <Button Command="{Binding RunCloseModalContentOverlay}" Margin="5" Padding="5"
+                            Style="{StaticResource PdfTabButtonStyle}">
+                    Cancel
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

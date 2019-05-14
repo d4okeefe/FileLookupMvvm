@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="ExpandCollapseKey" TargetType="Expander">
+        <Setter Property="IsExpanded" Value="True"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ElementName=collapseTicketsToggle, Path=IsChecked}" Value="True">
+                <Setter Property="IsExpanded" Value="False"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="GroupHeaderStyle" TargetType="{x:Type GroupItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GroupItem}">
+                    <Expander Style="{StaticResource ExpandCollapseKey}">
+                        <Expander.Header>
+                            <TextBlock Text="{Binding Name}" Foreground="Black"/>
+                        </Expander.Header>
+                        <ItemsPresenter/>
+                    </Expander>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

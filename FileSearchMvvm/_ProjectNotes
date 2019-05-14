@@ -1,0 +1,37 @@
+﻿FileSearchMvvm
+Daniel O'Keefe
+
+October 23, 2018
+Update
+I spent some time the past few weeks improving the PDF portion of the program. Users can now carry out a number of imposition steps, including centering single PDFs, nUp-ing circuit court covers on an 11x19 page, and imposing single Supreme Court covers and briefs. The centered PDFs are done using Javascript in Acrobat, and the impositions are done using iTextSharp. I've improved the way the program uses iText: transitional files are no longer saved to a drive location; rather, the imposition work is done by using memory streams of the PDFs. In the long run, it may be useful to implement this for the search/save/convert method. This would save the user from seeing temp PDF files appear and disappear in the c:\scratch folder.
+
+List of dependencies per execute button:
+
+
+
+
+
+March 8, 2018
+Overview
+	This project has been under development for several years. It began as a Windows Forms application, evolved into a WPF project, and in its current state is a WPF MVVM compliant project.
+Goals
+	1 Search our file system, especially by ticket and by name.
+	2 Convert files to PDF, creating (a) centered PDFs for customers and (b) imposed PDFs for printing.
+	3 Manipulate PDFs that already exist, by (a) centering the text on the page, (b) resizing the PDF page, or (c) imposing the text field on PDF pages for printing.
+
+What works
+	1 It searches the filesystem well. It also presents the results in a GUI, giving the user a view of only the latest files.
+	2 It carries out the ConvertAllInOne program well, except for edge cases (files with foldouts, apps that have unusual numbering schema).
+	3 Some of the imposition features, which allow PDF manipulation, are under development. (It is worth noting, however, that I originally redesigned the program primarily to simplify it, and thus eliminate some of the technical features that made the program appear bulky. I recently added many of these features back in.)
+
+Problems
+	1 Dependencies: The program cannot exist outside of our office. It is dependent on our filesystem. It is also dependent on many programs, especially Microsoft Word and Adobe Acrobat. It also depends on the "Adobe PDF" driver being in place, and it may depend on settings being configured in both programs. While it doesn't depend on running any MSWord VBA macros, it does depend on Acrobat Javascript to center PDFs.
+
+	2 It is feature rich. The MVVM structure encourages a certain type of organization, but the ViewModel has grown very, very large. I have done a lot of experimenting within the project, and it's been hard to keep track of which experiments have worked, and which have failed. I would like to purge the failed experiments, and keep only the parts that are necessary. To do this, I created a _DeletedFiles folder where unused code can be dropped.
+
+	3 My Models are not as well-structured as I would like.
+
+	4 Settings and customization: I would like to make a lot of the dependencies customizable. First, it would be great if the user, through either the GUI or with the command line, could change aspects of the program.
+		a The filesystem: User could change the filesystem that is searched if this became necessary.
+		b The desination location: User could change where files are saved. Right now, the default is scratch.
+		c Parts available: Program could check local PC and tailor what aspects of the program are available based on (1) whether Word is installed (2) whether Acrobat is installed (3) whether the Adobe PDF printer is available.

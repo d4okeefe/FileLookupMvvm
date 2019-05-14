@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="FileSearchMvvm.Views.ModalOverlays.SelectImpositionDetails"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FileSearchMvvm.Views.ModalOverlays"
+             xmlns:searchViewModel="clr-namespace:FileSearchMvvm.ViewModels.SearchViewModelFolder"
+             xmlns:vm="clr-namespace:FileSearchMvvm.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="550" d:DesignWidth="600"
+             DataContext="{Binding Source={x:Static vm:ViewModelLocator.MyViewModel}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\StyleSheet.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="RadioButton">
+                <Setter Property="Padding" Value="10"/>
+            </Style>
+        </Grid.Resources>
+        <Grid x:Name="selectImpositionOutsideGrid" Background="Black" Opacity="0.5">
+            <Grid.InputBindings>
+                <MouseBinding Gesture="LeftClick" Command="{Binding RunCloseModalContentOverlay}"/>
+            </Grid.InputBindings>
+        </Grid>
+        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="10" Background="White"
+                Margin="50" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="10">
+            <StackPanel>
+                <TextBlock FontFamily="Segoe" FontSize="20" FontWeight="Bold" Margin="0 10 0 2" Padding="5" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center">
+                                Impose single PDF file
+                </TextBlock>
+                <GroupBox Header="How is the original document set on the page?" Margin="0 0 0 1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <RadioButton IsChecked="{Binding IsTypesetPdf}" Content="Upper left of page (typeset)"
+                                     Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                     Style="{StaticResource PopupRadioButtonStyle}"/>
+                        <RadioButton IsChecked="{Binding IsCameraReadyCenteredPdf}" Content="Text is centered on page"
+                                     Grid.Row="1" Grid.Column="0"
+                                     Style="{StaticResource PopupRadioButtonStyle}"/>
+                        <RadioButton IsChecked="{Binding IsCameraReadyOffsetPdf}" Content="Text is not centered"
+                                     Grid.Row="1" Grid.Column="1"
+                                     Style="{StaticResource PopupRadioButtonStyle}"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="Type of bind (choose one)" Margin="0 3">
+                    <UniformGrid Columns="2">
+                        <RadioButton IsChecked="{Binding IsSaddleStitchPdf}" Content="Saddle stitch"
+                                     Style="{StaticResource PopupRadioButtonStyle}"/>
+                        <RadioButton IsChecked="{Binding IsPerfectBindPdf}" Content="Perfect bind"
+                                     Style="{StaticResource PopupRadioButtonStyle}"/>
+                    </UniformGrid>
+                </GroupBox>
+                <GroupBox Header="Type of document (choose one)" Margin="0 3">
+                    <StackPanel>
+                        <UniformGrid Columns="2">
+                            <RadioButton IsChecked="{Binding HasCoverPdf}"
+                                         Style="{StaticResource PopupRadioButtonStyle}"
+                                         Content="Pdf includes a cover" GroupName="pdfTypeGroup" />
+                            <RadioButton IsChecked="{Binding NoCoverBriefOnlyPdf}" 
+                                         Style="{StaticResource PopupRadioButtonStyle}"
+                                         Content="Pdf has only brief pages" GroupName="pdfTypeGroup"/>
+                        </UniformGrid>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Blank pages have been properly added?" Margin="0 3">
+                    <StackPanel>
+                        <UniformGrid Columns="2">
+                            <RadioButton IsChecked="{Binding BlankPagesAdded}"
+                                         Style="{StaticResource PopupRadioButtonStyle}"
+                                         Content="Yes" GroupName="pdfBlankPagesGroup" />
+                            <RadioButton IsChecked="{Binding BlankPagesNotAdded}" 
+                                         Style="{StaticResource PopupRadioButtonStyle}"
+                                         Content="No" GroupName="pdfBlankPagesGroup"/>
+                        </UniformGrid>
+                    </StackPanel>
+                </GroupBox>
+                <UniformGrid Columns="2" Margin="0 10 0 0">
+                    <Button Command="{Binding RunImposedPdf}" Padding="12" Margin="6"
+                                Style="{StaticResource PdfTabButtonStyle}">
+                        Impose PDF
+                    </Button>
+                    <Button Command="{Binding RunCloseModalContentOverlay}" Padding="12" Margin="6"
+                                Style="{StaticResource PdfTabButtonStyle}">
+                        Cancel
+                    </Button>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSearchMvvm", "FileSearchMvvm\FileSearchMvvm.csproj", "{E041042B-0B93-48DB-B258-DAE0732D2629}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7C8296D9-64B2-41B4-920A-26A3E6FEF167}"
+	ProjectSection(SolutionItems) = preProject
+		FileSearchMvvm\ImageFiles\cockle-logo-splash-screen.png = FileSearchMvvm\ImageFiles\cockle-logo-splash-screen.png
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfCropAndNUp", "..\..\VisualStudioApps2\PdfCropAndNUp\PdfCropAndNUp\PdfCropAndNUp.csproj", "{87124F67-EE37-41C3-9F12-92B82BC26603}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E041042B-0B93-48DB-B258-DAE0732D2629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E041042B-0B93-48DB-B258-DAE0732D2629}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E041042B-0B93-48DB-B258-DAE0732D2629}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E041042B-0B93-48DB-B258-DAE0732D2629}.Debug|x64.Build.0 = Debug|Any CPU
+		{E041042B-0B93-48DB-B258-DAE0732D2629}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E041042B-0B93-48DB-B258-DAE0732D2629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E041042B-0B93-48DB-B258-DAE0732D2629}.Release|x64.ActiveCfg = Release|x64
+		{E041042B-0B93-48DB-B258-DAE0732D2629}.Release|x64.Build.0 = Release|x64
+		{87124F67-EE37-41C3-9F12-92B82BC26603}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87124F67-EE37-41C3-9F12-92B82BC26603}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87124F67-EE37-41C3-9F12-92B82BC26603}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{87124F67-EE37-41C3-9F12-92B82BC26603}.Debug|x64.Build.0 = Debug|Any CPU
+		{87124F67-EE37-41C3-9F12-92B82BC26603}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87124F67-EE37-41C3-9F12-92B82BC26603}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87124F67-EE37-41C3-9F12-92B82BC26603}.Release|x64.ActiveCfg = Release|Any CPU
+		{87124F67-EE37-41C3-9F12-92B82BC26603}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
