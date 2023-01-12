@@ -65,6 +65,17 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 SpecialImpositionsOverlayIsVisible = true;
                 ModalOverlayIsVisible = true;
             }
+            /**
+             * Jan 12 2023 Adding Modal that will allow PDF conversion offline
+             * Prereqs: 
+             *  1. Word & Acrobat Installed on local PC
+             *  2. 
+             */
+            else if (o.ToString() == "OffNetworkConversions")
+            {
+                OffNetworkConversionsIsVisible = true;
+                ModalOverlayIsVisible = true;
+            }
         }
         private bool canImposePdf()
         {

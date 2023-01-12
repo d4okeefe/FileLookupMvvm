@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FileSearchMvvm</RootNamespace>
     <AssemblyName>FileSearchMvvm</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -35,6 +35,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -73,7 +74,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>cockle.ico</ApplicationIcon>
@@ -263,6 +264,9 @@
     <Compile Include="Views\ModalOverlays\CoverLengthSelector.xaml.cs">
       <DependentUpon>CoverLengthSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ModalOverlays\OffNetworkConversionsSelector.xaml.cs">
+      <DependentUpon>OffNetworkConversionsSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ModalOverlays\ScratchFolderSelector.xaml.cs">
       <DependentUpon>ScratchFolderSelector.xaml</DependentUpon>
     </Compile>
@@ -370,6 +374,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ModalOverlays\OffNetworkConversionsSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ModalOverlays\ScratchFolderSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -425,9 +433,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="FileSearchMvvm_1_TemporaryKey.pfx" />
-    <None Include="FileSearchMvvm_2_TemporaryKey.pfx" />
-    <None Include="FileSearchMvvm_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -438,12 +443,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\VisualStudioApps2\PdfCropAndNUp\PdfCropAndNUp\PdfCropAndNUp.csproj">
-      <Project>{87124f67-ee37-41c3-9f12-92b82bc26603}</Project>
-      <Name>PdfCropAndNUp</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Acrobat">
@@ -540,7 +539,12 @@
   <ItemGroup>
     <Resource Include="cockle.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\PdfCropAndNUp\PdfCropAndNUp\PdfCropAndNUp.csproj">
+      <Project>{87124f67-ee37-41c3-9f12-92b82bc26603}</Project>
+      <Name>PdfCropAndNUp</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

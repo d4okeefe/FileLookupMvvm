@@ -43,6 +43,7 @@
         private bool selectImposeBriefOptions;
         private bool selectImposeCoverOptions;
         private bool specialImpositionsOverlayIsVisible;
+        private bool offNetworkConversionsOverlayIsVisible;
         private bool selectImpositionDetailsIsVisible;
         private bool setFileOrderModalIsVisible;
         private bool showLatestFiles;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSearchMvvm", "FileSearchMvvm\FileSearchMvvm.csproj", "{E041042B-0B93-48DB-B258-DAE0732D2629}"
 EndProject
@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		FileSearchMvvm\ImageFiles\cockle-logo-splash-screen.png = FileSearchMvvm\ImageFiles\cockle-logo-splash-screen.png
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfCropAndNUp", "..\..\VisualStudioApps2\PdfCropAndNUp\PdfCropAndNUp\PdfCropAndNUp.csproj", "{87124F67-EE37-41C3-9F12-92B82BC26603}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfCropAndNUp", "..\PdfCropAndNUp\PdfCropAndNUp\PdfCropAndNUp.csproj", "{87124F67-EE37-41C3-9F12-92B82BC26603}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,5 +39,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AA968545-0D05-4166-974F-1B02EA80C5E0}
 	EndGlobalSection
 EndGlobal

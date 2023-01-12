@@ -477,6 +477,15 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 RaisePropertyChanged();
             }
         }
+        public bool OffNetworkConversionsIsVisible
+        {
+            get { return offNetworkConversionsOverlayIsVisible; }
+            set
+            {
+                offNetworkConversionsOverlayIsVisible = value;
+                RaisePropertyChanged();
+            }
+        }
         public bool CameraReadyFileSelectorIsVisible
         {
             get { return cameraReadyFileSelectorIsVisible; }
