@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Linq;
+using DocumentFormat.OpenXml.Drawing;
 
 namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
 {
@@ -660,6 +661,15 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             {
                 filesConvertedToPdf = value;
                 PdfFilesExist = FilesConvertedToPdf != null && FilesConvertedToPdf.Count > 0;
+                RaisePropertyChanged();
+            }
+        }
+        public ObservableCollection<CockleFile> WordFilesInScratch
+        {
+            get { return wordFilesInScratch; }
+            set
+            {
+                wordFilesInScratch = value;
                 RaisePropertyChanged();
             }
         }

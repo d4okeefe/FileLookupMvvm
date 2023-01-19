@@ -68,6 +68,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             // Modal overlay logic commands
             RunSelectFolderInScratch = new RelayCommand(o => selectFolderInScratch(o), o => canSelectFolderInScratch(o));
             RunImposePdfOptions = new RelayCommand(o => imposePdfOptions(o/*param for circuit or supreme court*/), o => canImposePdfOptions());
+            RunConvertWordFilesOffline = new RelayCommand(o => convertWordFilesOffline(o), o => canConvertWordFilesOffline(o));
             RunShowOnlyCameraReadySearchTextTickets = new RelayCommand(o => showOnlyCameraReadySearchTextTickets(o), o => canShowOnlyCameraReadySearchTextTickets(o));
             RunShowAllCameraReadyFilesAndClearSearchText = new RelayCommand(o => showAllCameraReadyFilesAndClearSearchText(), o => canShowAllCameraReadyFilesAndClearSearchText());
             RunCloseModalContentOverlay = new RelayCommand(o => closeModalContentOverlay());
@@ -100,6 +101,16 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             RunOpenPdfSourceFolder = new RelayCommand(o => openPdfSourceFolder(), o => canOpenPdfSourceFolder());
             RunGetFilesFromCameraReadyFolder = new RelayCommand(o => getFilesFromCameraReadyFolder(), o => canGetFilesFromCameraReadyFolder());
             #endregion
+        }
+
+        private void convertWordFilesOffline(object o)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool canConvertWordFilesOffline(object o)
+        {
+            return WordFilesInScratch != null && WordFilesInScratch.Count() > 0;
         }
 
         private bool canExtractPagesFromPdfDocument()

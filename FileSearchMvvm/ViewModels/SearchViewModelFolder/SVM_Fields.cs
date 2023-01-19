@@ -1,4 +1,6 @@
-﻿namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
+﻿using FileSearchMvvm.Models.CockleTypes;
+
+namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
 {
     public partial class SearchViewModel
     {
@@ -58,6 +60,7 @@
         private string searchText;
         private string updateLabel;
         private string updateLabelPdf;
+        private System.Collections.ObjectModel.ObservableCollection<CockleFile> wordFilesInScratch;
         private System.Collections.Generic.List<Models.CockleTypes.CockleFilePdf> selectedPdfFiles;
         private System.Collections.ObjectModel.ObservableCollection<Models.CockleTypes.CockleFilePdf> filesConvertedToPdf;
         private System.Collections.ObjectModel.ObservableCollection<string> userSearchTerms;

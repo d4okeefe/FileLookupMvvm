@@ -24,6 +24,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         public ICommand RunImposeCircuitCourtCover_8pt5x23 { get; private set; }
         public ICommand RunImposedPdf { get; private set; }
         public ICommand RunImposePdfOptions { get; private set; }
+        public ICommand RunConvertWordFilesOffline { get; private set; }
         public ICommand RunOpenPdfSourceFolder { get; private set; }
         public ICommand RunOpenSelectedCameraReadyFile { get; private set; }
         public ICommand RunOpenSelectedFile { get; private set; }

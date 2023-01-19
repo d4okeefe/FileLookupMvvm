@@ -1,62 +1,41 @@
-﻿<UserControl x:Name="searchViewUserControl"
-             x:Class="FileSearchMvvm.Views.SearchView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FileSearchMvvm.Views"
-             xmlns:viewModels="clr-namespace:FileSearchMvvm.ViewModels"
-             xmlns:searchViewModel="clr-namespace:FileSearchMvvm.ViewModels.SearchViewModelFolder"
-             xmlns:vm="clr-namespace:FileSearchMvvm.ViewModels"
-             xmlns:converters="clr-namespace:FileSearchMvvm.Views.Utilities.Converters"
-             xmlns:modalContentPresenter="clr-namespace:BenjaminGale.Controls;assembly=ModalContentPresenter"
-             xmlns:modaloverlays="clr-namespace:FileSearchMvvm.Views.ModalOverlays"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:dd="urn:gong-wpf-dragdrop"
-             mc:Ignorable="d"
-             d:DesignHeight="550" d:DesignWidth="600"
-             KeyboardNavigation.TabNavigation="Cycle"
-             DataContext="{Binding Source={x:Static vm:ViewModelLocator.MyViewModel}}">
+﻿<UserControl x:Name="searchViewUserControl" x:Class="FileSearchMvvm.Views.SearchView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:FileSearchMvvm.Views" xmlns:viewModels="clr-namespace:FileSearchMvvm.ViewModels" xmlns:searchViewModel="clr-namespace:FileSearchMvvm.ViewModels.SearchViewModelFolder" xmlns:vm="clr-namespace:FileSearchMvvm.ViewModels" xmlns:converters="clr-namespace:FileSearchMvvm.Views.Utilities.Converters" xmlns:modalContentPresenter="clr-namespace:BenjaminGale.Controls;assembly=ModalContentPresenter" xmlns:modaloverlays="clr-namespace:FileSearchMvvm.Views.ModalOverlays" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:dd="urn:gong-wpf-dragdrop" mc:Ignorable="d" d:DesignHeight="550" d:DesignWidth="600" KeyboardNavigation.TabNavigation="Cycle" DataContext="{Binding Source={x:Static vm:ViewModelLocator.MyViewModel}}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="..\CustomControls\CustomToggle.xaml"/>
-                <ResourceDictionary Source="..\CustomControls\GroupHeaderStyle.xaml"/>
-                <ResourceDictionary Source="..\CustomControls\AndroidToggle.xaml"/>
-                <ResourceDictionary Source="..\Views\StyleSheet.xaml"/>
+                <ResourceDictionary Source="..\CustomControls\CustomToggle.xaml" />
+                <ResourceDictionary Source="..\CustomControls\GroupHeaderStyle.xaml" />
+                <ResourceDictionary Source="..\CustomControls\AndroidToggle.xaml" />
+                <ResourceDictionary Source="..\Views\StyleSheet.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.InputBindings>
-        <KeyBinding Key="Esc" Command="{Binding RunCloseModalContentOverlay}"/>
+        <KeyBinding Key="Esc" Command="{Binding RunCloseModalContentOverlay}" />
     </UserControl.InputBindings>
     <TabControl BorderThickness="0">
-        <TabItem Header="Search for typeset files" 
-                 IsEnabled="True" KeyboardNavigation.IsTabStop="False"
-                 BorderThickness="0">
+        <TabItem Header="Search for typeset files" IsEnabled="True" KeyboardNavigation.IsTabStop="False" BorderThickness="0">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="8*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <GroupBox Header="{StaticResource ResourceKey=SearchAndViewOptionsGroupHeader}" Grid.Column="0" Grid.Row="0">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0"
-                       Target="{Binding ElementName=searchEverywhereToggle}">
+                        <Label Grid.Row="0" Grid.Column="0" Target="{Binding ElementName=searchEverywhereToggle}">
                             <TextBlock TextWrapping="WrapWithOverflow">
                         Search everywhere?
                             </TextBlock>
@@ -71,57 +50,35 @@
                         Display only latest files?
                             </TextBlock>
                         </Label>
-                        <ToggleButton Grid.Row="0" Grid.Column="1"
-                              Margin="0 6"
-                              x:Name="searchEverywhereToggle" 
-                              Style="{StaticResource AndroidToggle}" 
-                              IsTabStop="False"
-                              IsChecked="{Binding SearchEverywhere}"/>
-                        <ToggleButton Grid.Row="1" Grid.Column="1"
-                              Margin="0 6"
-                              x:Name="collapseTicketsToggle" 
-                              Style="{StaticResource AndroidToggle}" 
-                              IsTabStop="False" 
-                              IsChecked="{Binding CollapseTickets}"/>
-                        <ToggleButton Grid.Row="2" Grid.Column="1"
-                                      Margin="0 6"
-                                      x:Name="showLatestFilesToggle"
-                                      IsChecked="{Binding ShowLatestFiles}"
-                                      Style="{StaticResource AndroidToggle}"
-                                      IsTabStop="False"
-                                      HorizontalAlignment="Right"/>
+                        <ToggleButton Grid.Row="0" Grid.Column="1" Margin="0 6" x:Name="searchEverywhereToggle" Style="{StaticResource AndroidToggle}" IsTabStop="False" IsChecked="{Binding SearchEverywhere}" />
+                        <ToggleButton Grid.Row="1" Grid.Column="1" Margin="0 6" x:Name="collapseTicketsToggle" Style="{StaticResource AndroidToggle}" IsTabStop="False" IsChecked="{Binding CollapseTickets}" />
+                        <ToggleButton Grid.Row="2" Grid.Column="1" Margin="0 6" x:Name="showLatestFilesToggle" IsChecked="{Binding ShowLatestFiles}" Style="{StaticResource AndroidToggle}" IsTabStop="False" HorizontalAlignment="Right" />
                     </Grid>
                 </GroupBox>
                 <Viewbox Grid.Row="0" Grid.Column="2" Margin="5">
-                    <Image Source="..\ImageFiles\cockle-logo.png"/>
+                    <Image Source="..\ImageFiles\cockle-logo.png" />
                 </Viewbox>
                 <GroupBox Header="Search" Grid.Row="0" Grid.Column="1" BorderThickness="1">
                     <StackPanel>
-                        <Label Content="Enter _search term here" Target="{Binding ElementName=searchComboBox}"/>
-                        <ComboBox Name="searchComboBox" Padding="6" IsEditable="True" 
-                                  KeyboardNavigation.IsTabStop="True" TabIndex="0" Margin="5 0"
-                                  BorderThickness="0 0 0 2"
-                                  Text="{Binding Path=SearchText}"
-                                  ItemsSource="{Binding UserSearchTerms}">
+                        <Label Content="Enter _search term here" Target="{Binding ElementName=searchComboBox}" />
+                        <ComboBox Name="searchComboBox" Padding="6" IsEditable="True" KeyboardNavigation.IsTabStop="True" TabIndex="0" Margin="5 0" BorderThickness="0 0 0 2" Text="{Binding Path=SearchText}" ItemsSource="{Binding UserSearchTerms}">
                             <ComboBox.Style>
                                 <Style TargetType="ComboBox">
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=searchProgressBar, Path=IsIndeterminate}" Value="True"/>
+                                                <Condition Binding="{Binding ElementName=searchProgressBar, Path=IsIndeterminate}" Value="True" />
                                             </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="False"/>
+                                            <Setter Property="IsEnabled" Value="False" />
                                         </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </ComboBox.Style>
                         </ComboBox>
-                        <Button Margin="0 10 0 0" Command="{Binding RunSearchAndConvert}" 
-                                KeyboardNavigation.IsTabStop="True" BorderThickness="0" Padding="5">
+                        <Button Margin="0 10 0 0" Command="{Binding RunSearchAndConvert}" KeyboardNavigation.IsTabStop="True" BorderThickness="0" Padding="5">
                             <Button.Content>
                                 <StackPanel>
-                                    <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"
-                                               Text="One Step: Type ticket &amp; click to find and convert files"/>
+                                    <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Left" Text="One Step: Type ticket &amp; click to find and convert files" />
                                 </StackPanel>
                             </Button.Content>
                         </Button>
@@ -130,160 +87,88 @@
                 <DockPanel Grid.Column="2" Grid.Row="1">
                     <GroupBox Header="Search" DockPanel.Dock="Top">
                         <StackPanel>
-                            <Button Command="{Binding RunSearch}" Margin="0 2"
-                                    Padding="6"
-                                    Content="Search" 
-                                    MinWidth="150"
-                                    IsDefault="True"
-                                    KeyboardNavigation.IsTabStop="True"
-                                    BorderThickness="0"/>
-                            <Button Command="{Binding RunCancelSearch}" Margin="0 2"
-                                  Padding="6"
-                                    Content="Cancel/Reset" 
-                                    MinWidth="150"
-                                    IsCancel="True"
-                                    KeyboardNavigation.IsTabStop="True"
-                                    BorderThickness="0"/>
-                            <Button Command="{Binding RunOpenSelectedFile}" Margin="0 2"
-                                    Padding="6"
-                                    Content="Open Selected File"
-                                    MinWidth="150"
-                                    KeyboardNavigation.IsTabStop="True"
-                                    BorderThickness="0"/>
-                            <Button Command="{Binding RunOpenSourceFolder}" Margin="0 2"
-                                    Padding="6"
-                                    Content="Open Source Folder"
-                                    MinWidth="150"
-                                    KeyboardNavigation.IsTabStop="True"
-                                    BorderThickness="0"/>
-                            <Button Command="{Binding RunOpenPdfSourceFolder}" Margin="0 2"                        
-                                    Padding="6"
-                                    Content="Open Folder of Converted Files"
-                                    MinWidth="150"
-                                    BorderThickness="0"/>
-                            <Button Command="{Binding RunConvertToPdf}" Margin="0 2"
-                                    Padding="6"
-                                    Content="Convert to PDF"
-                                    MinWidth="150"
-                                    KeyboardNavigation.IsTabStop="True"
-                                    BorderThickness="0"/>
+                            <Button Command="{Binding RunSearch}" Margin="0 2" Padding="6" Content="Search" MinWidth="150" IsDefault="True" KeyboardNavigation.IsTabStop="True" BorderThickness="0" />
+                            <Button Command="{Binding RunCancelSearch}" Margin="0 2" Padding="6" Content="Cancel/Reset" MinWidth="150" IsCancel="True" KeyboardNavigation.IsTabStop="True" BorderThickness="0" />
+                            <Button Command="{Binding RunOpenSelectedFile}" Margin="0 2" Padding="6" Content="Open Selected File" MinWidth="150" KeyboardNavigation.IsTabStop="True" BorderThickness="0" />
+                            <Button Command="{Binding RunOpenSourceFolder}" Margin="0 2" Padding="6" Content="Open Source Folder" MinWidth="150" KeyboardNavigation.IsTabStop="True" BorderThickness="0" />
+                            <Button Command="{Binding RunOpenPdfSourceFolder}" Margin="0 2" Padding="6" Content="Open Folder of Converted Files" MinWidth="150" BorderThickness="0" />
+                            <Button Command="{Binding RunConvertToPdf}" Margin="0 2" Padding="6" Content="Convert to PDF" MinWidth="150" KeyboardNavigation.IsTabStop="True" BorderThickness="0" />
                             <!--Visibility="{Binding Path=ShowHideConvertToPdfWithAcrobat, Converter={StaticResource BoolToVis}}"-->
                             <!--Button will not display if Acrobat is not installed-->
-                            <Button Command="{Binding RunSearchAndSaveToScratch}" Margin="0 2"  
-                                    Padding="5"
-                                    Content="Save latest files to scratch"
-                                    MinWidth="150"
-                                    KeyboardNavigation.IsTabStop="True"
-                                    BorderThickness="0"/>
-                            <Button Command="{Binding RunConvertToPdfProof}" Margin="0 2"
-                                    Visibility="Collapsed"
-                                    Padding="6"
-                                    Content="Convert to PDF for Proof"
-                                    MinWidth="150"
-                                    KeyboardNavigation.IsTabStop="True"
-                                    BorderThickness="0"/>
+                            <Button Command="{Binding RunSearchAndSaveToScratch}" Margin="0 2" Padding="5" Content="Save latest files to scratch" MinWidth="150" KeyboardNavigation.IsTabStop="True" BorderThickness="0" />
+                            <Button Command="{Binding RunConvertToPdfProof}" Margin="0 2" Visibility="Collapsed" Padding="6" Content="Convert to PDF for Proof" MinWidth="150" KeyboardNavigation.IsTabStop="True" BorderThickness="0" />
                             <!--Visibility="{Binding Path=ShowHideConvertToPdfForProof, Converter={StaticResource BoolToVis}}"-->
                             <!--Button will not display if Ghostscript is not installed-->
-                            <Button Content="Close" Margin="0 2"
-                                    Padding="6"
-                                    Click="CloseButton_Click"
-                                    KeyboardNavigation.IsTabStop="True"
-                                    BorderThickness="0"/>
+                            <Button Content="Close" Margin="0 2" Padding="6" Click="CloseButton_Click" KeyboardNavigation.IsTabStop="True" BorderThickness="0" />
                         </StackPanel>
                     </GroupBox>
                     <GroupBox BorderThickness="0">
                         <StackPanel>
-                            <TextBox Text="{Binding UpdateLabel}" Style="{StaticResource TextBoxStyle}"/>
-                            <ProgressBar Name="searchProgressBar" Margin="0 2"
-                                         MinHeight="10"
-                                         IsIndeterminate="{Binding IsExecutingSearch}"
-                                         BorderThickness="0"
-                                         Visibility="{Binding IsExecutingSearch, Converter={StaticResource BoolToVis}}">
+                            <TextBox Text="{Binding UpdateLabel}" Style="{StaticResource TextBoxStyle}" />
+                            <ProgressBar Name="searchProgressBar" Margin="0 2" MinHeight="10" IsIndeterminate="{Binding IsExecutingSearch}" BorderThickness="0" Visibility="{Binding IsExecutingSearch, Converter={StaticResource BoolToVis}}">
                             </ProgressBar>
                         </StackPanel>
                     </GroupBox>
                 </DockPanel>
                 <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
-                    <DataGrid Name="searchDataGrid"
-                                ItemsSource="{Binding Path=FilesListCollectionView}"
-                                SelectedItem="{Binding SelectedFile}"
-                                AutoGenerateColumns="False" 
-                                Background="{x:Null}"
-                                BorderBrush="{x:Null}" 
-                                CanUserAddRows="False" 
-                                CanUserDeleteRows="False"
-                                CellStyle="{StaticResource datagridCellStyle}"
-                                GridLinesVisibility="Horizontal"
-                                HeadersVisibility="Column"
-                                HorizontalGridLinesBrush="DarkGray"
-                                HorizontalScrollBarVisibility="Disabled" 
-                                IsReadOnly="True" 
-                                IsTabStop="False" 
-                                KeyboardNavigation.IsTabStop="False"
-                                KeyboardNavigation.TabNavigation="None" 
-                                SelectionMode="Extended" 
-                                SelectionUnit="FullRow" 
-                                ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <DataGrid Name="searchDataGrid" ItemsSource="{Binding Path=FilesListCollectionView}" SelectedItem="{Binding SelectedFile}" AutoGenerateColumns="False" Background="{x:Null}" BorderBrush="{x:Null}" CanUserAddRows="False" CanUserDeleteRows="False" CellStyle="{StaticResource datagridCellStyle}" GridLinesVisibility="Horizontal" HeadersVisibility="Column" HorizontalGridLinesBrush="DarkGray" HorizontalScrollBarVisibility="Disabled" IsReadOnly="True" IsTabStop="False" KeyboardNavigation.IsTabStop="False" KeyboardNavigation.TabNavigation="None" SelectionMode="Extended" SelectionUnit="FullRow" ScrollViewer.VerticalScrollBarVisibility="Visible">
                         <DataGrid.InputBindings>
-                            <KeyBinding Key="Return" Command="{Binding RunOpenSelectedFile}"/>
-                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RunOpenSelectedFile}"/>
+                            <KeyBinding Key="Return" Command="{Binding RunOpenSelectedFile}" />
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RunOpenSelectedFile}" />
                         </DataGrid.InputBindings>
                         <DataGrid.Resources>
-                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGray"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGray" />
                         </DataGrid.Resources>
                         <DataGrid.GroupStyle>
                             <!--Sets datagrid to group by Atty/Ticket-->
-                            <GroupStyle ContainerStyle="{StaticResource GroupHeaderStyle}"/>
+                            <GroupStyle ContainerStyle="{StaticResource GroupHeaderStyle}" />
                         </DataGrid.GroupStyle>
                         <DataGrid.RowStyle>
                             <Style TargetType="{x:Type DataGridRow}">
                                 <Style.Triggers>
                                     <MultiDataTrigger>
-                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Setter Property="Visibility" Value="Collapsed" />
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Path=IsLatestFile}" Value="False"/>
-                                            <Condition Binding="{Binding ElementName=showLatestFilesToggle, Path=IsChecked}" Value="True"/>
+                                            <Condition Binding="{Binding Path=IsLatestFile}" Value="False" />
+                                            <Condition Binding="{Binding ElementName=showLatestFilesToggle, Path=IsChecked}" Value="True" />
                                         </MultiDataTrigger.Conditions>
                                     </MultiDataTrigger>
                                     <Trigger Property="Visibility" Value="Collapsed">
-                                        <Setter Property="IsSelected" Value="False"/>
+                                        <Setter Property="IsSelected" Value="False" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.RowStyle>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding RunSelectionChanged}"
-                                                       CommandParameter="{Binding Path=SelectedItems, ElementName=searchDataGrid}">
+                                <i:InvokeCommandAction Command="{Binding RunSelectionChanged}" CommandParameter="{Binding Path=SelectedItems, ElementName=searchDataGrid}">
                                 </i:InvokeCommandAction>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Filename" Binding="{Binding Path=Filename}" MinWidth="200"/>
-                            <DataGridTextColumn Header="File type" Binding="{Binding Path=FileType}" MinWidth="115"/>
-                            <DataGridTextColumn Header="Year" Binding="{Binding Path=Year}" MinWidth="115"/>
+                            <DataGridTextColumn Header="Filename" Binding="{Binding Path=Filename}" MinWidth="200" />
+                            <DataGridTextColumn Header="File type" Binding="{Binding Path=FileType}" MinWidth="115" />
+                            <DataGridTextColumn Header="Year" Binding="{Binding Path=Year}" MinWidth="115" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </Grid>
         </TabItem>
-        <TabItem Header="View PDF files" 
-                 KeyboardNavigation.IsTabStop="False"
-                 BorderThickness="0">
+        <TabItem Header="View PDF files" KeyboardNavigation.IsTabStop="False" BorderThickness="0" Height="20" VerticalAlignment="Top">
             <modalContentPresenter:ModalContentPresenter IsModal="{Binding ModalOverlayIsVisible}">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="1.0*"/>
-                        <RowDefinition Height="0.8*"/>
+                        <RowDefinition Height="1.0*" />
+                        <RowDefinition Height="0.8*" />
+                        <RowDefinition Height="0.2*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Row="0" Grid.Column="0">
                         <StackPanel>
-                            <GroupBox Header="Collect PDF Files" HorizontalAlignment="Left" Padding="6"
-                              Width="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=ActualWidth}">
+                            <GroupBox Header="Collect PDF Files" HorizontalAlignment="Left" Padding="6" Width="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=ActualWidth}">
                                 <StackPanel>
                                     <Button Command="{Binding RunGetFilesFromScratchFolder}" Style="{StaticResource PdfTabButtonStyle}">
                                         <TextBlock TextWrapping="WrapWithOverflow">
@@ -291,15 +176,14 @@
                                         </TextBlock>
                                     </Button>
                                     <Button Command="{Binding RunGetFilesFromCameraReadyFolder}" Style="{StaticResource PdfTabButtonStyle}">
-                                        <TextBlock TextWrapping="WrapWithOverflow"><Run Text="Select files from Camera Ready"/></TextBlock>
+                                        <TextBlock TextWrapping="WrapWithOverflow"><Run Text="Select files from Camera Ready" /></TextBlock>
                                     </Button>
                                 </StackPanel>
                             </GroupBox>
-                            <GroupBox Header="Manage PDF Files" HorizontalAlignment="Left" Padding="6"
-                              Width="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=ActualWidth}">
+                            <GroupBox Header="Manage PDF Files" HorizontalAlignment="Left" Padding="6" Width="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=ActualWidth}">
                                 <StackPanel>
                                     <Button Command="{Binding RunOpenSelectedPdfFile}" Style="{StaticResource PdfTabButtonStyle}">
-                                        <TextBlock TextWrapping="WrapWithOverflow" >
+                                        <TextBlock TextWrapping="WrapWithOverflow">
                                         Open selected file
                                         </TextBlock>
                                     </Button>
@@ -309,7 +193,7 @@
                                         </TextBlock>
                                     </Button>
                                     <Button Command="{Binding RunRefreshLoadedPdfFolder}" Style="{StaticResource PdfTabButtonStyle}">
-                                        <TextBlock TextWrapping="WrapWithOverflow"><Run Text="Refresh PDF folder"/></TextBlock>
+                                        <TextBlock TextWrapping="WrapWithOverflow"><Run Text="Refresh PDF folder" /></TextBlock>
                                     </Button>
                                     <Button Command="{Binding RunClearPdfFiles}" Style="{StaticResource PdfTabButtonStyle}">
                                         <TextBlock TextWrapping="WrapWithOverflow">
@@ -323,11 +207,9 @@
                     </Grid>
                     <Grid Grid.Row="0" Grid.Column="1">
                         <StackPanel>
-                            <GroupBox Header="Create/Alter PDF Files" HorizontalAlignment="Left" Padding="6"
-                              Width="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=ActualWidth}">
+                            <GroupBox Header="Create/Alter PDF Files" HorizontalAlignment="Left" Padding="6" Width="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=ActualWidth}">
                                 <StackPanel>
-                                    <Button Command="{Binding RunCombineSelectedPdfFilesOptions}" 
-                                            Style="{StaticResource PdfTabButtonStyle}">
+                                    <Button Command="{Binding RunCombineSelectedPdfFilesOptions}" Style="{StaticResource PdfTabButtonStyle}">
                                         <TextBlock TextWrapping="WrapWithOverflow">
                                             Combine selected files
                                         </TextBlock>
@@ -337,7 +219,7 @@
                                             Center PDF
                                         </TextBlock>
                                     </Button>
-                                    <Button Command="{Binding RunImposePdfOptions}" CommandParameter="SupremeCourt"  Style="{StaticResource PdfTabButtonStyle}">
+                                    <Button Command="{Binding RunImposePdfOptions}" CommandParameter="SupremeCourt" Style="{StaticResource PdfTabButtonStyle}">
                                         <TextBlock TextWrapping="WrapWithOverflow">Impose Supreme Court PDF</TextBlock>
                                     </Button>
                                     <Button Command="{Binding RunImposePdfOptions}" CommandParameter="SpecialImpositions" Style="{StaticResource PdfTabButtonStyle}">
@@ -348,118 +230,108 @@
                                     </Button>-->
                                 </StackPanel>
                             </GroupBox>
-                            <StackPanel Orientation="Vertical">
-                                <Label Target="{Binding ElementName=pdfSourceFolderTextBlock}" Padding="6" Content="Source folder:"/>
-                                <TextBox Name="pdfSourceFolderTextBlock" Padding="6" TextWrapping="Wrap" Style="{StaticResource TextBoxStyle}" HorizontalContentAlignment="Left"
-                                               Text="{Binding Path=DestinationFolderConvertedFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            </StackPanel>
-                            <TextBox Text="{Binding UpdateLabelPdf, UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource TextBoxStyle}" TextWrapping="Wrap" HorizontalContentAlignment="Left"/>
+                            <GroupBox Header="Work with MSWord files offline" HorizontalAlignment="Left" Padding="6" Width="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=ActualWidth}">
+                                <StackPanel>
+                                    <Button Command="{Binding RunConvertWordFilesOffline}" CommandParameter="ConvertAllWordFiles" Style="{StaticResource PdfTabButtonStyle}">
+                                        Convert all MSWord files
+                                    </Button>
+                                    <Button Command="{Binding RunConvertWordFilesOffline}" CommandParameter="ConvertSelectedWordFiles" Style="{StaticResource PdfTabButtonStyle}">
+                                        Convert selected MSWord files
+                                    </Button>
+                                </StackPanel>
+                            </GroupBox>
+
                         </StackPanel>
                     </Grid>
                     <!--DATAGRID-->
-                    <DataGrid x:Name="pdfDataGrid" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2"
-                              ItemsSource="{Binding Path=FilesConvertedToPdf, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding SelectedPdfFile, UpdateSourceTrigger=PropertyChanged}"
-                              AutoGenerateColumns="False" 
-                              CanUserAddRows="False" 
-                              CanUserDeleteRows="False"
-                              HorizontalScrollBarVisibility="Disabled" 
-                              IsReadOnly="True" 
-                              IsTabStop="False" 
-                              KeyboardNavigation.IsTabStop="False"
-                              KeyboardNavigation.TabNavigation="None" 
-                              SelectionMode="Extended" 
-                              SelectionUnit="FullRow" 
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              BorderBrush="{x:Null}"
-                              BorderThickness="1"
-                              AllowDrop="True"
-                              GridLinesVisibility="None"
-                              dd:DragDrop.UseDefaultDragAdorner="True"
-                              dd:DragDrop.IsDragSource="True" 
-                              dd:DragDrop.IsDropTarget="True" 
-                              CellStyle="{StaticResource datagridCellStyle}">
+                    <DataGrid x:Name="pdfDataGrid" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="1" ItemsSource="{Binding Path=FilesConvertedToPdf, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPdfFile, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" HorizontalScrollBarVisibility="Disabled" IsReadOnly="True" IsTabStop="False" KeyboardNavigation.IsTabStop="False" KeyboardNavigation.TabNavigation="None" SelectionMode="Extended" SelectionUnit="FullRow" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="{x:Null}" BorderThickness="1" AllowDrop="True" GridLinesVisibility="None" dd:DragDrop.UseDefaultDragAdorner="True" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" CellStyle="{StaticResource datagridCellStyle}">
                         <DataGrid.Background>
                             <LinearGradientBrush EndPoint="0.5 4" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                                <GradientStop Color="White" Offset="0.105"/>
-                                <GradientStop Color="Gray" Offset="1"/>
+                                <GradientStop Color="White" Offset="0.105" />
+                                <GradientStop Color="Gray" Offset="1" />
                             </LinearGradientBrush>
                         </DataGrid.Background>
                         <!--Add a sorting mechanism ?-->
                         <DataGrid.InputBindings>
-                            <KeyBinding Key="Return" Command="{Binding RunOpenSelectedPdfFile}"/>
-                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RunOpenSelectedPdfFile}"/>
+                            <KeyBinding Key="Return" Command="{Binding RunOpenSelectedPdfFile}" />
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RunOpenSelectedPdfFile}" />
                         </DataGrid.InputBindings>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Filename" Binding="{Binding Path=Filename}" MinWidth="200" MaxWidth="350" FontWeight="DemiBold">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Padding" Value="3"/>
+                                        <Setter Property="Padding" Value="3" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
                             <DataGridTextColumn Header="File type" Binding="{Binding Path=FileType}" MinWidth="125">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Padding" Value="3"/>
+                                        <Setter Property="Padding" Value="3" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
                             <DataGridTextColumn Header="# of Pages" Binding="{Binding Path=PageRange.TotalPages}" MinWidth="75">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Padding" Value="3"/>
+                                        <Setter Property="Padding" Value="3" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
                             <DataGridTextColumn Header="First page" Binding="{Binding Path=PageRange.FirstPage}" MinWidth="75">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Padding" Value="3"/>
+                                        <Setter Property="Padding" Value="3" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
                             <DataGridTextColumn Header="Last page" Binding="{Binding Path=PageRange.LastPage}" MinWidth="75">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Padding" Value="3"/>
+                                        <Setter Property="Padding" Value="3" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
                         </DataGrid.Columns>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding RunPdfSelectionChanged}" 
-                                                       CommandParameter="{Binding Path=SelectedItems, ElementName=pdfDataGrid}"/>
+                                <i:InvokeCommandAction Command="{Binding RunPdfSelectionChanged}" CommandParameter="{Binding Path=SelectedItems, ElementName=pdfDataGrid}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </DataGrid>
+                    <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
+                        <Border BorderThickness="1" BorderBrush="Black" />
+                        <StackPanel Orientation="Horizontal">
+                            <Label Target="{Binding ElementName=pdfSourceFolderTextBlock}" Content="Source folder:" />
+                            <TextBox Name="pdfSourceFolderTextBlock" TextWrapping="Wrap" Style="{StaticResource TextBoxStyle}" HorizontalContentAlignment="Left" Text="{Binding Path=DestinationFolderConvertedFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                        <TextBox Text="{Binding UpdateLabelPdf, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxStyle}" TextWrapping="Wrap" HorizontalContentAlignment="Left" />
+                    </StackPanel>
                 </Grid>
                 <modalContentPresenter:ModalContentPresenter.ModalContent>
                     <Grid>
                         <Grid Visibility="{Binding SelectImpositionDetailsIsVisible, Converter={StaticResource BoolToVis}}">
-                            <modaloverlays:SelectImpositionDetails/>
+                            <modaloverlays:SelectImpositionDetails />
                         </Grid>
                         <Grid Visibility="{Binding SpecialImpositionsOverlayIsVisible, Converter={StaticResource BoolToVis}}">
-                            <modaloverlays:SpecialImpositionSelector/>
+                            <modaloverlays:SpecialImpositionSelector />
                         </Grid>
                         <Grid Visibility="{Binding SetFileOrderModalIsVisible, Converter={StaticResource BoolToVis}}">
-                            <modaloverlays:SetFileOrder/>
+                            <modaloverlays:SetFileOrder />
                         </Grid>
                         <Grid Visibility="{Binding CoverLengthSelectorIsVisible, Converter={StaticResource BoolToVis}}">
-                            <modaloverlays:CoverLengthSelector/>
+                            <modaloverlays:CoverLengthSelector />
                         </Grid>
                         <Grid Visibility="{Binding ScratchFolderSelectorIsVisible, Converter={StaticResource BoolToVis}}">
-                            <modaloverlays:ScratchFolderSelector/>
+                            <modaloverlays:ScratchFolderSelector />
                         </Grid>
                         <Grid Visibility="{Binding CameraReadyFileSelectorIsVisible, Converter={StaticResource BoolToVis}}">
-                            <modaloverlays:CameraReadyFileSelector/>
+                            <modaloverlays:CameraReadyFileSelector />
                         </Grid>
                     </Grid>
                 </modalContentPresenter:ModalContentPresenter.ModalContent>
                 <modalContentPresenter:ModalContentPresenter.InputBindings>
-                    <KeyBinding Key="Esc" Command="{Binding RunCloseModalContentOverlay}"/>
+                    <KeyBinding Key="Esc" Command="{Binding RunCloseModalContentOverlay}" />
                 </modalContentPresenter:ModalContentPresenter.InputBindings>
             </modalContentPresenter:ModalContentPresenter>
         </TabItem>

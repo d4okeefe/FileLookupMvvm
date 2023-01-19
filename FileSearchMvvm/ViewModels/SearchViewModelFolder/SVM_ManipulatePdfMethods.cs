@@ -54,13 +54,13 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         }
         private void imposePdfOptions(object o)
         {
-            if(o.ToString() == "SupremeCourt")
+            if (o.ToString() == "SupremeCourt")
             {
                 SelectImposeCoverOptions = true;
                 SelectImpositionDetailsIsVisible = true;
                 ModalOverlayIsVisible = true;
             }
-            else if(o.ToString() == "SpecialImpositions")
+            else if (o.ToString() == "SpecialImpositions")
             {
                 SpecialImpositionsOverlayIsVisible = true;
                 ModalOverlayIsVisible = true;
@@ -109,35 +109,35 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             var new_files_created = new List<CockleFilePdf>();
             try
             {
-                if(IsTypesetPdf)
+                if (IsTypesetPdf)
                 {
                     string[] new_file_name = null;
                     var num_pages = new iTextSharp.text.pdf.PdfReader(SelectedPdfFile.FullName).NumberOfPages;
                     new_file_name = generateImposedTypesetPdfFilename(num_pages);
 
                     ImposeSingleTypesetPdf imposed_doc = null;
-                    if(HasCoverPdf && IsPerfectBindPdf && num_pages > 1)
+                    if (HasCoverPdf && IsPerfectBindPdf && num_pages > 1)
                     {
                         // two docs
                         // cover first: extract page 1
 
-                        using(var file_stream = PdfUtilities.ConvertPdfFileToStream(SelectedPdfFile.FullName))
+                        using (var file_stream = PdfUtilities.ConvertPdfFileToStream(SelectedPdfFile.FullName))
                         {
                             // problem here: cv_stream is dying !!!
-                            using(var cv_stream = extractPagesFromPerfectBindStream(file_stream, 1, 1))
+                            using (var cv_stream = extractPagesFromPerfectBindStream(file_stream, 1, 1))
                             {
                                 imposed_doc = new ImposeSingleTypesetPdf(cv_stream,
                                     IsSaddleStitchPdf ? TypeOfBindEnum.SaddleStitch : TypeOfBindEnum.PerfectBind, hasCover: true);
-                                using(var fs = new System.IO.FileStream(new_file_name[0], System.IO.FileMode.Create, System.IO.FileAccess.Write))
+                                using (var fs = new System.IO.FileStream(new_file_name[0], System.IO.FileMode.Create, System.IO.FileAccess.Write))
                                 {
                                     fs.Write(imposed_doc.NewDocMemStream.ToArray(), 0, imposed_doc.NewDocMemStream.ToArray().Length);
                                 }
                             }
-                            using(var br_stream = PdfUtilities.ExtractPdfPagesToStream(file_stream, 2, num_pages))
+                            using (var br_stream = PdfUtilities.ExtractPdfPagesToStream(file_stream, 2, num_pages))
                             {
                                 imposed_doc = new ImposeSingleTypesetPdf(br_stream,
                                     IsSaddleStitchPdf ? TypeOfBindEnum.SaddleStitch : TypeOfBindEnum.PerfectBind, hasCover: false);
-                                using(var fs = new System.IO.FileStream(new_file_name[1], System.IO.FileMode.Create, System.IO.FileAccess.Write))
+                                using (var fs = new System.IO.FileStream(new_file_name[1], System.IO.FileMode.Create, System.IO.FileAccess.Write))
                                 {
                                     fs.Write(imposed_doc.NewDocMemStream.ToArray(), 0, imposed_doc.NewDocMemStream.ToArray().Length);
                                 }
@@ -149,13 +149,13 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                     {
                         imposed_doc = new ImposeSingleTypesetPdf(SelectedPdfFile,
                             IsSaddleStitchPdf ? TypeOfBindEnum.SaddleStitch : TypeOfBindEnum.PerfectBind, HasCoverPdf);
-                        using(var fs = new System.IO.FileStream(new_file_name[0], System.IO.FileMode.Create, System.IO.FileAccess.Write))
+                        using (var fs = new System.IO.FileStream(new_file_name[0], System.IO.FileMode.Create, System.IO.FileAccess.Write))
                         {
                             fs.Write(imposed_doc.NewDocMemStream.ToArray(), 0, imposed_doc.NewDocMemStream.ToArray().Length);
                         }
                     }
                 }
-                else if(IsCameraReadyCenteredPdf)
+                else if (IsCameraReadyCenteredPdf)
                 {
                     var new_files = PdfCropAndNUp.PdfCookbook.CreatePrintReadyFile(
                         SelectedPdfFile.FullName,
@@ -167,12 +167,12 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                         IsCameraReadyCenteredPdf,
                         IsCameraReadyOffsetPdf
                         );
-                    if(new_files.All(x => System.IO.File.Exists(x.FullName)))
+                    if (new_files.All(x => System.IO.File.Exists(x.FullName)))
                     {
                         UpdateLabelPdf = "Created:";
-                        foreach(var x in new_files)
+                        foreach (var x in new_files)
                         {
-                            if(!FilesConvertedToPdf.Any(y => x.FullName == y.FullName))
+                            if (!FilesConvertedToPdf.Any(y => x.FullName == y.FullName))
                             {
                                 FilesConvertedToPdf.Add(new CockleFilePdf(x.FullName, SourceFileTypeEnum.Imposed_Pdf));
                             }
@@ -180,7 +180,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                         }
                     }
                 }
-                else if(IsCameraReadyOffsetPdf)
+                else if (IsCameraReadyOffsetPdf)
                 {
                     var new_files = PdfCropAndNUp.PdfCookbook.CreatePrintReadyFile(
                         SelectedPdfFile.FullName,
@@ -192,7 +192,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                         IsCameraReadyCenteredPdf,
                         IsCameraReadyOffsetPdf
                         );
-                    if(new_files.All(x => System.IO.File.Exists(x.FullName)))
+                    if (new_files.All(x => System.IO.File.Exists(x.FullName)))
                     {
                         UpdateLabelPdf = "Created:";
                         new_files.ForEach(x =>
@@ -203,7 +203,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 UpdateLabelPdf = ex.Message;
             }
@@ -215,34 +215,34 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             // get custom name
             var custom_name_a = string.Empty;
             var custom_name_b = string.Empty;
-            if(IsSaddleStitchPdf)
+            if (IsSaddleStitchPdf)
             {
-                if(HasCoverPdf && num_pages == 1)
+                if (HasCoverPdf && num_pages == 1)
                 {
                     custom_name_a = "Cover_SaddleStitch";
                 }
-                else if(HasCoverPdf && num_pages > 1)
+                else if (HasCoverPdf && num_pages > 1)
                 {
                     custom_name_a = "Cover_&_Brief_SaddleStitch";
                 }
-                else if(!HasCoverPdf)
+                else if (!HasCoverPdf)
                 {
                     custom_name_a = "Brief_SaddleStitch";
                 }
             }
             else // Perfect Bind
             {
-                if(HasCoverPdf && num_pages == 1)
+                if (HasCoverPdf && num_pages == 1)
                 {
                     custom_name_a = "Cover_PerfectBind";
                 }
-                else if(HasCoverPdf && num_pages > 1)
+                else if (HasCoverPdf && num_pages > 1)
                 {
                     // need two names here
                     custom_name_a = "Cover_PerfectBind";
                     custom_name_b = "Brief_PerfectBind";
                 }
-                else if(!HasCoverPdf)
+                else if (!HasCoverPdf)
                 {
                     custom_name_a = "Brief_PerfectBind";
                 }
@@ -250,24 +250,24 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
 
             // get ticket + atty
             var ticket_atty = FilesConvertedToPdf.Where(x => x.TicketNumber != null && !(string.IsNullOrEmpty(x.Attorney))).Select(x => x.TicketPlusAttorney).FirstOrDefault().Trim();
-            if(string.IsNullOrEmpty(ticket_atty))
+            if (string.IsNullOrEmpty(ticket_atty))
             { ticket_atty = FilesConvertedToPdf.Where(x => x.TicketNumber != null).Select(x => x.TicketNumber).FirstOrDefault().ToString().Trim(); }
             custom_name_a = ticket_atty + " " + custom_name_a;
-            if(!string.IsNullOrEmpty(custom_name_b)) custom_name_b = (ticket_atty + " " + custom_name_b).Trim();
+            if (!string.IsNullOrEmpty(custom_name_b)) custom_name_b = (ticket_atty + " " + custom_name_b).Trim();
 
             new_file_name[0] = System.IO.Path.Combine(DestinationFolderConvertedFiles, custom_name_a + ".pdf");
             var i = 0;
-            while(System.IO.File.Exists(new_file_name[0]))
+            while (System.IO.File.Exists(new_file_name[0]))
             {
                 new_file_name[0] = new_file_name[0].Substring(0, new_file_name[0].Length - 4);
                 new_file_name[0] = System.IO.Path.Combine(DestinationFolderConvertedFiles, new_file_name[0] + "_" + i + ".pdf");
                 i++;
             }
-            if(!string.IsNullOrEmpty(custom_name_b))
+            if (!string.IsNullOrEmpty(custom_name_b))
             {
                 new_file_name[1] = System.IO.Path.Combine(DestinationFolderConvertedFiles, custom_name_b + ".pdf");
                 i = 0;
-                while(System.IO.File.Exists(new_file_name[1]))
+                while (System.IO.File.Exists(new_file_name[1]))
                 {
                     new_file_name[1] = new_file_name[1].Substring(0, new_file_name[1].Length - 4);
                     new_file_name[1] = System.IO.Path.Combine(DestinationFolderConvertedFiles, new_file_name[1] + "_" + i + ".pdf");
@@ -290,7 +290,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 doc.Open();
 
                 var reader = new iTextSharp.text.pdf.PdfReader(orig_stream.ToArray());
-                for(var i = start_page; i <= end_page; i++)
+                for (var i = start_page; i <= end_page; i++)
                 {
                     var page = writer.GetImportedPage(reader, i);
                     writer.AddPage(page);
@@ -299,7 +299,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 reader.Close();
                 doc.Close();
             }
-            catch(Exception excpt)
+            catch (Exception excpt)
             {
                 System.Diagnostics.Debug.WriteLine(excpt);
             }
@@ -311,7 +311,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         #region CENTER PDF: 1) Show user options, 2) Execute
         private bool canCenterPdfOptions()
         {
-            if(null != SelectedPdfFile)
+            if (null != SelectedPdfFile)
             {
                 return true;
             }
@@ -324,7 +324,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 // preset booleans
                 // preset cover length
                 var cv_len = FilesConvertedToPdf.Where(x => x.CoverLength != null).Select(x => x.CoverLength).FirstOrDefault();
-                switch(cv_len)
+                switch (cv_len)
                 {
                     case 48:
                         Cover48PicaPdf = true;
@@ -348,7 +348,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
 
                 // preset "has cover"
                 var file_type = SelectedPdfFile.FileType;
-                switch(file_type)
+                switch (file_type)
                 {
                     case SourceFileTypeEnum.Cover:
                         NoCover_CenterPdf = false;
@@ -373,7 +373,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 ModalOverlayIsVisible = true;
                 CoverLengthSelectorIsVisible = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -382,14 +382,14 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         {
             var can_ex = false;
 
-            if(null != SelectedPdfFile)
+            if (null != SelectedPdfFile)
             {
                 can_ex = true;
             }
 
-            if(UpperLeftPosition_CenterPdf)
+            if (UpperLeftPosition_CenterPdf)
             {
-                if(Cover48PicaPdf || Cover49PicaPdf || Cover50PicaPdf || Cover51PicaPdf)
+                if (Cover48PicaPdf || Cover49PicaPdf || Cover50PicaPdf || Cover51PicaPdf)
                 {
                     can_ex = true;
                 }
@@ -406,12 +406,12 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 // get new file name
                 var cv_type = CenteredCoverType.NotSet;
                 var custom_filename_text = string.Empty;
-                if(BookletSelected_CenterPdf)
+                if (BookletSelected_CenterPdf)
                 {
                     cv_type = CenteredCoverType.Booklet;
                     custom_filename_text = "CenteredOnBookletSizedPage";
                 }
-                else if(LetterSelected_CenterPdf)
+                else if (LetterSelected_CenterPdf)
                 {
                     cv_type = CenteredCoverType.Letter;
                     custom_filename_text = "CenteredOnLetterSizedPage";
@@ -420,14 +420,14 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 var new_file_name = PdfUtilities.GenerateFilenameForNewPdf(DestinationFolderConvertedFiles, custom_filename_text, ticket_atty);
 
                 // typeset -- upper left
-                if(UpperLeftPosition_CenterPdf)
+                if (UpperLeftPosition_CenterPdf)
                 {
                     // this is a simple typeset centering, done with the one step process
                     int? cv_len = null;
-                    if(HasCover_CenterPdf)
+                    if (HasCover_CenterPdf)
                     {
                         // two ways to get cover length: 1) check other files in directory, 2) iText method
-                        if(FilesConvertedToPdf.Any(x => null != x.CoverLength))
+                        if (FilesConvertedToPdf.Any(x => null != x.CoverLength))
                         {
                             cv_len = FilesConvertedToPdf.Where(x => null != x.CoverLength).FirstOrDefault().CoverLength;
                         }
@@ -438,10 +438,10 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                     }
                     var c = await System.Threading.Tasks.Task.Run(() =>
                         new Models.CenterPdfText.CenterTypesetPdf(SelectedPdfFile, cv_len, new_file_name, cv_type));
-                    if(null != c && null != c.NewFileCreated
+                    if (null != c && null != c.NewFileCreated
                         && System.IO.File.Exists(c.NewFileCreated.FullName))
                     {
-                        if(!FilesConvertedToPdf.Any(x => x.FullName == c.NewFileCreated.FullName))
+                        if (!FilesConvertedToPdf.Any(x => x.FullName == c.NewFileCreated.FullName))
                         {
                             FilesConvertedToPdf.Add(c.NewFileCreated);
                         }
@@ -449,24 +449,24 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                     }
                 }
                 // already centered
-                else if(CenterPosition_CenterPdf)
+                else if (CenterPosition_CenterPdf)
                 {
                     // if already centered, no need to separate out cover
                     Models.CenterPdfText.CenterCameraReadyBrief ctr = null;
-                    if(BookletSelected_CenterPdf)
+                    if (BookletSelected_CenterPdf)
                     {
                         ctr = await System.Threading.Tasks.Task.Run(() =>
                             new Models.CenterPdfText.CenterCameraReadyBrief(SelectedPdfFile, new_file_name, CenteredCoverType.Booklet));
                     }
-                    else if(LetterSelected_CenterPdf)
+                    else if (LetterSelected_CenterPdf)
                     {
                         ctr = await System.Threading.Tasks.Task.Run(() =>
                             new Models.CenterPdfText.CenterCameraReadyBrief(SelectedPdfFile, new_file_name, CenteredCoverType.Letter));
                     }
-                    if(null != ctr && null != ctr.NewFileCreated
+                    if (null != ctr && null != ctr.NewFileCreated
                         && System.IO.File.Exists(ctr.NewFileCreated.FullName))
                     {
-                        if(!FilesConvertedToPdf.Any(x => x.FullName == ctr.NewFileCreated.FullName))
+                        if (!FilesConvertedToPdf.Any(x => x.FullName == ctr.NewFileCreated.FullName))
                         {
                             FilesConvertedToPdf.Add(ctr.NewFileCreated);
                             UpdateLabelPdf = "Created: " + System.IO.Path.GetFileNameWithoutExtension(ctr.NewFileCreated.FullName);
@@ -474,12 +474,12 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                     }
                 }
                 // need to develop this: method to crop (find text boundaries) and center
-                else if(NotCentered_CenterPdf)
+                else if (NotCentered_CenterPdf)
                 {
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.Write(ex.Message);
                 UpdateLabelPdf = ex.Message;
@@ -516,7 +516,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         {
             try
             {
-                if(null == FilesConvertedToPdf) { FilesConvertedToPdf = new ObservableCollection<CockleFilePdf>(); }
+                if (null == FilesConvertedToPdf) { FilesConvertedToPdf = new ObservableCollection<CockleFilePdf>(); }
                 else { FilesConvertedToPdf.Clear(); DestinationFolderConvertedFiles = string.Empty; }
 
                 // also clear Files & UpdateLabel
@@ -525,7 +525,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 UpdateLabelPdf = string.Empty;
 
                 var selections = FilesFoundInCameraReady.Where(x => x.IsSelected).ToList();
-                if(selections.Count() == 0)
+                if (selections.Count() == 0)
                 {
                     throw new Exception("No files selected");
                 }
@@ -544,13 +544,13 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 {
                     var new_full_name = System.IO.Path.Combine(new_folder, x.ShortFileName);
                     System.IO.File.Copy(x.FileName, new_full_name, true);
-                    if(System.IO.File.Exists(new_full_name))
+                    if (System.IO.File.Exists(new_full_name))
                     {
                         FilesConvertedToPdf.Add(new CockleFilePdf(new_full_name, SourceFileTypeEnum.Camera_Ready));
                     }
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 UpdateLabelPdf = ex.Message;
             }
@@ -577,17 +577,27 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
 
             // clear out existing files
             Files?.Clear(); UpdateLabel = string.Empty;
-            if(null == FilesConvertedToPdf) { FilesConvertedToPdf = new ObservableCollection<CockleFilePdf>(); }
+            if (null == FilesConvertedToPdf) { FilesConvertedToPdf = new ObservableCollection<CockleFilePdf>(); }
             else { FilesConvertedToPdf.Clear(); DestinationFolderConvertedFiles = string.Empty; }
+            if (null == WordFilesInScratch) { WordFilesInScratch = new ObservableCollection<CockleFile>(); }
+            else { WordFilesInScratch.Clear(); DestinationFolderConvertedFiles = string.Empty; }
 
-            if(null == SelectedFolderInScratch) { return; }
+            if (null == SelectedFolderInScratch) { return; }
 
             var files = System.IO.Directory.EnumerateFiles(SelectedFolderInScratch.FolderName).ToList();
 
             files.ForEach(x =>
             {
                 FilesConvertedToPdf.Add(new CockleFilePdf(x, SourceFileTypeEnum.Unrecognized));
+
+                if (x.EndsWith(".docx")) 
+                {
+                    CockleFile wordFileInScratch = new CockleFile(x);
+                    wordFileInScratch.IsLatestFile = true;
+                    WordFilesInScratch.Add(wordFileInScratch); 
+                }
             });
+
             DestinationFolderConvertedFiles =
                 System.IO.Path.GetDirectoryName(FilesConvertedToPdf.FirstOrDefault().FullName);
         }
@@ -600,7 +610,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             try
             {
                 // clear old results
-                if(null == FoldersFoundInScratch) { FoldersFoundInScratch = new ObservableCollection<CockleFolderInScratch>(); }
+                if (null == FoldersFoundInScratch) { FoldersFoundInScratch = new ObservableCollection<CockleFolderInScratch>(); }
                 else { FoldersFoundInScratch?.Clear(); }
                 // populate listbox
                 var foldersInScratch = System.IO.Directory.EnumerateDirectories(@"c:\scratch").ToList();
@@ -608,7 +618,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 ModalOverlayIsVisible = true;
                 ScratchFolderSelectorIsVisible = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
@@ -630,11 +640,11 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 var ticket_atty = FilesConvertedToPdf.Where(x => !string.IsNullOrEmpty(x.TicketPlusAttorney)).Select(x => x.TicketPlusAttorney).FirstOrDefault();
                 var new_file_name = PdfUtilities.GenerateFilenameForNewPdf(DestinationFolderConvertedFiles, "CombinedPdf", ticket_atty);
 
-                if(StaticSystemTests.IsAdobePdfPrinterAvailable())
+                if (StaticSystemTests.IsAdobePdfPrinterAvailable())
                 {
                     // create combined pdf
                     Models.MergePdf.SimpleMergedPdf simpleMergedPdf;
-                    if(!string.IsNullOrEmpty(new_file_name))
+                    if (!string.IsNullOrEmpty(new_file_name))
                     {
                         simpleMergedPdf = new Models.MergePdf.SimpleMergedPdf(combine_files, "Acrobat", true, new_file_name);
                     }
@@ -644,9 +654,9 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                     }
 
                     // add new file to FilesConvertedToPdf collection
-                    if(System.IO.File.Exists(simpleMergedPdf?.NewCombinedFile))
+                    if (System.IO.File.Exists(simpleMergedPdf?.NewCombinedFile))
                     {
-                        if(!FilesConvertedToPdf.Any(x => x.FullName == simpleMergedPdf.NewCombinedFile))
+                        if (!FilesConvertedToPdf.Any(x => x.FullName == simpleMergedPdf.NewCombinedFile))
                         {
                             FilesConvertedToPdf.Add(new CockleFilePdf(simpleMergedPdf.NewCombinedFile, SourceFileTypeEnum.Combined_Pdf));
                             UpdateLabelPdf = "Created: " + simpleMergedPdf.NewCombinedFile;
@@ -659,7 +669,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                     //var combined_file = new SimpleMergedPdf(SelectedPdfFiles, "iTextSharp").NewFileName;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.Write(ex.Message);
                 UpdateLabelPdf = ex.Message;
@@ -668,7 +678,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         private void combineSelectedPdfFilesOptions()
         {
             // clear old results
-            if(null == FilesConvertedToPdf_Ordered)
+            if (null == FilesConvertedToPdf_Ordered)
             { FilesConvertedToPdf_Ordered = new ObservableCollection<CockleFilePdf>(); }
             else { FilesConvertedToPdf_Ordered.Clear(); }
             // load list
@@ -711,7 +721,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
 
                 UpdateLabelPdf = "PDF/A file successfully converted.";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 UpdateLabelPdf = ex.Message;
                 //UpdateLabelPdf = $"File from '{FilesConvertedToPdf.FirstOrDefault().TicketPlusAttorney}' failed PDF/A conversion.";
@@ -740,7 +750,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
 
                 UpdateLabelPdf = "PDF/A file successfully converted.";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 UpdateLabelPdf = ex.Message;
                 //UpdateLabelPdf = $"File from '{FilesConvertedToPdf.FirstOrDefault().TicketPlusAttorney}' failed PDF/A conversion.";
