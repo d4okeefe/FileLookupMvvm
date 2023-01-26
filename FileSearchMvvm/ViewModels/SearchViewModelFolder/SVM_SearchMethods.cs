@@ -134,7 +134,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             }
 
             string CAMERA_READY_FOLDER = System.IO.Directory.Exists(@"L:\Camera Ready")
-                ? @"L:\Camera Ready" : @"\\CLBDC02\Printing\Camera Ready";
+                ? @"L:\Camera Ready" : @"\\clbdc03\Printing\Camera Ready";
 
             var filesFoundInCameraReady = System.IO.Directory.EnumerateFiles(CAMERA_READY_FOLDER);
 

@@ -619,7 +619,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         /// <summary>
         /// This is the core method of the program.
         /// With a single ticket number, it collects Word files from
-        /// the Current directory (H:\ locally mapped or CLBDC02\Current\ on server)
+        /// the Current directory (H:\ locally mapped or clbdc03\Current\ on server)
         /// and converts the files to PDFs in the user's scratch folder.
         /// 
         /// In the process, it also combines the ticket in several ways:

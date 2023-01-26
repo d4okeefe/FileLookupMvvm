@@ -7,8 +7,8 @@ namespace FileSearchMvvm.Models.CockleTypes
     public class CockleFile : ICockleFile
     {
         #region Constants
-        private string[] current_folder = { @"\\CLBDC02\Current\", @"H:\" };
-        private string[] backup_folder = { @"\\CLBDC02\Backup_Typesetting\", @"F:\" };
+        private string[] current_folder = { @"\\clbdc03\Current\", @"H:\" };
+        private string[] backup_folder = { @"\\clbdc03\Backup_Typesetting\", @"F:\" };
         private Dictionary<SourceFileTypeEnum, string> primary_patterns =
             new Dictionary<SourceFileTypeEnum, string>
         {
@@ -66,12 +66,12 @@ namespace FileSearchMvvm.Models.CockleTypes
                     var fullname_without_root = FullName.Remove(0, root_dir.Length + 1);
 
                     string local_fullname = string.Empty;
-                    if (root_dir.ToLower().Equals(@"\\CLBDC02\Current".ToLower()))
+                    if (root_dir.ToLower().Equals(@"\\clbdc03\Current".ToLower()))
                     {
                         local_fullname = System.IO.Path.Combine(@"H:\", fullname_without_root);
                         return local_fullname;
                     }
-                    else if (root_dir.ToLower().Equals(@"\\CLBDC02\Backup_Typesetting".ToLower()))
+                    else if (root_dir.ToLower().Equals(@"\\clbdc03\Backup_Typesetting".ToLower()))
                     {
                         local_fullname = System.IO.Path.Combine(@"F:\", fullname_without_root);
                         return local_fullname;

@@ -24,9 +24,9 @@ namespace FileSearchMvvm.Models.Search
                     List<CockleFile> collectedFiles;
 
                         // get directories
-                        var current = @"\\clbdc02\Current";
+                        var current = @"\\clbdc03\Current";
                     var dir_current = new System.IO.DirectoryInfo(current);
-                    var backup_typesetting = @"\\clbdc02\Backup_Typesetting";
+                    var backup_typesetting = @"\\clbdc03\Backup_Typesetting";
                     var dir_backup = new System.IO.DirectoryInfo(backup_typesetting);
                         //var _files_current2 = dir_current.GetFiles("*" + SearchText + "*", System.IO.SearchOption.AllDirectories)
                         //    .Where(f => f.Name.Contains(SearchText))

@@ -112,9 +112,9 @@ namespace FileSearchMvvm.Models.Imposition
                 System.IO.File.Copy(src, dest, true);
                 return true;
             }
-            else if(System.IO.Directory.Exists(@"\\CLBDC02\Printing\PDF Possible Orders"))
+            else if(System.IO.Directory.Exists(@"\\clbdc03\Printing\PDF Possible Orders"))
             {
-                dest = System.IO.Path.Combine(@"\\CLBDC02\Printing\PDF Possible Orders", System.IO.Path.GetFileName(src));
+                dest = System.IO.Path.Combine(@"\\clbdc03\Printing\PDF Possible Orders", System.IO.Path.GetFileName(src));
                 System.IO.File.Copy(src, dest, true);
                 return true;
             }
@@ -132,9 +132,9 @@ namespace FileSearchMvvm.Models.Imposition
                 System.IO.File.Copy(src, dest, true);
                 return true;
             }
-            else if(System.IO.Directory.Exists(@"\\CLBDC02\Printing\Documents Ready to Print"))
+            else if(System.IO.Directory.Exists(@"\\clbdc03\Printing\Documents Ready to Print"))
             {
-                dest = System.IO.Path.Combine(@"\\CLBDC02\Printing\Documents Ready to Print", System.IO.Path.GetFileName(src));
+                dest = System.IO.Path.Combine(@"\\clbdc03\Printing\Documents Ready to Print", System.IO.Path.GetFileName(src));
                 System.IO.File.Copy(src, dest, true);
                 return true;
             }

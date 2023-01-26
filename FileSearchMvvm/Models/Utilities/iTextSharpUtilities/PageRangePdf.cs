@@ -93,17 +93,19 @@ namespace FileSearchMvvm.Models.Utilities.iTextSharpUtilities
                                 {
                                     firstLine = textFromPage.Substring(0, posNewLine);
                                     char[] removeNewlineAndSpace = firstLine.Replace(" ", "").Replace("\n", "").ToArray();
-
-                                    // January 2023 -- odd case of paging AIN ia, iia, iiia, iva
-                                    // remove 'a' from end if starts with 'i'
-                                    if (removeNewlineAndSpace[0] == 'i' && removeNewlineAndSpace[removeNewlineAndSpace.Length - 1] == 'a')
+                                    if (removeNewlineAndSpace.Length > 0)
                                     {
-                                        removeNewlineAndSpace = removeNewlineAndSpace.Take(removeNewlineAndSpace.Length - 1).ToArray();
-                                    }
-                                    int n = Roman_Parse(removeNewlineAndSpace);
-                                    if (n != 0)
-                                    {
-                                        Pages[i] = n;
+                                        // January 2023 -- odd case of paging AIN ia, iia, iiia, iva
+                                        // remove 'a' from end if starts with 'i'
+                                        if (removeNewlineAndSpace[0] == 'i' && removeNewlineAndSpace[removeNewlineAndSpace.Length - 1] == 'a')
+                                        {
+                                            removeNewlineAndSpace = removeNewlineAndSpace.Take(removeNewlineAndSpace.Length - 1).ToArray();
+                                        }
+                                        int n = Roman_Parse(removeNewlineAndSpace);
+                                        if (n != 0)
+                                        {
+                                            Pages[i] = n;
+                                        }
                                     }
                                 }
                                 // search for App. on page
