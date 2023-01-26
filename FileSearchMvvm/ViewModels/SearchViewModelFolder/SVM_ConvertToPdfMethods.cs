@@ -95,6 +95,17 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         {
             return IsSingleTicket && !IsExecutingSearch && !IsConvertingToPdf;
         }
+        /**
+         * Main 'one step' function --
+         *   1. searches for ticket
+         *   2. saves files to scratch
+         *   3. converts saved files
+         *   4. places converted files in new folder
+         *   5. centers & imposes final pdfs
+         *   
+         * Goal on 1/25/2023:
+         *   Add these steps so that most of this can be done offline   
+         */
         private async void searchAndConvertToPdf()
         {
             #region step 1: search for files
@@ -620,6 +631,270 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         /// <param name="cancellationToken"></param>
         /// <param name="latestFiles"></param>
         /// <returns></returns>
+        
+        private async Task<List<CockleFilePdf>> executePdfConversionOffline(
+            IProgress<string> progress,
+            CancellationToken cancellationToken,
+            List<CockleFile> wordFilesToConvert)
+        {
+            bool exceptionThrownInAwait = false; // tracks excptn in await
+
+            List<CockleFile> filesSelectedForConversion;
+            bool convertAll = false;
+
+            // get files from grid if null
+            if (null == wordFilesToConvert) { filesSelectedForConversion = SelectedFiles; }
+            else { convertAll = true; filesSelectedForConversion = wordFilesToConvert; }
+
+            if (filesSelectedForConversion.Count < 1) throw new Exception();
+
+            // Convert files to Pdf: Open Word and Print to Pdf
+            var filesToReturnFromTask = await Task.Run(() =>
+            {
+                OpenMSWordAndCreatePdfs openMSWordAndCreatePdfs = null;
+                List<FilePrintedSuccessfully> filesPrintedSuccessfully = null;
+                try
+                {
+                    openMSWordAndCreatePdfs = new OpenMSWordAndCreatePdfs(
+                        filesSelectedForConversion,
+                        UpdateLabel,
+                        progress,
+                        cancellationToken,
+                        exceptionThrownInAwait);
+                    cancellationToken = openMSWordAndCreatePdfs.CancellationToken;
+                    exceptionThrownInAwait = openMSWordAndCreatePdfs.ExceptionThrownInAwait;
+                    filesPrintedSuccessfully = openMSWordAndCreatePdfs.FilesPrintedSuccessfully;
+                }
+                catch (Exception ex)
+                {
+                    if (null != openMSWordAndCreatePdfs)
+                    {
+                        cancellationToken = openMSWordAndCreatePdfs.CancellationToken;
+                        exceptionThrownInAwait = openMSWordAndCreatePdfs.ExceptionThrownInAwait;
+                        filesPrintedSuccessfully = openMSWordAndCreatePdfs.FilesPrintedSuccessfully;
+                    }
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    return null; // should this be here?
+                }
+
+                #region POINT OF NO RETURN IN CONVERSION
+                // save each new pdf as CockleFilePdf object
+                var cockleFilePdfsPrintedSuccessfully = new List<CockleFilePdf>();
+                foreach (var _f in filesPrintedSuccessfully)
+                {
+                    if (_f.LengthOfCover == null && _f.CockleFile == null)
+                    {
+                        cockleFilePdfsPrintedSuccessfully.Add(new CockleFilePdf(_f.PdfFilename, _f.Filetype));
+                    }
+                    else
+                    {
+                        cockleFilePdfsPrintedSuccessfully.Add(
+                            new CockleFilePdf(_f.CockleFile, _f.PdfFilename, _f.LengthOfCover));
+                    }
+                }
+
+                // test whether all converted files have same ticket
+                bool allConvertedFilesSameTicket = cockleFilePdfsPrintedSuccessfully
+                    .TrueForAll(f => f.TicketNumber ==
+                    cockleFilePdfsPrintedSuccessfully.First().TicketNumber);
+
+                // move files to unique folder
+                if ((allConvertedFilesSameTicket || IsSingleTicket) && cockleFilePdfsPrintedSuccessfully.Count() > 0) // PROBLEM HERE !!!
+                {
+                    DestinationFolderConvertedFiles = movePdfFilesToNewScratchFolder(cockleFilePdfsPrintedSuccessfully);
+                }
+
+                // set ranks of pdfs before returning
+                setCockleFilePdfRanks(cockleFilePdfsPrintedSuccessfully);
+
+                if (convertAll)
+                {
+                    // 1. create imposed pdf files
+                    Models.Imposition.ImposeFullConvertedTicket createImposedPdfiTextSharp = null;
+                    int? len_of_cover = null;
+                    try
+                    {
+                        len_of_cover = cockleFilePdfsPrintedSuccessfully
+                            .Find(x => x.FileType == SourceFileTypeEnum.Cover)
+                            ?.CoverLength ?? null;
+
+                        createImposedPdfiTextSharp =
+                            new Models.Imposition.ImposeFullConvertedTicket(
+                                DestinationFolderConvertedFiles,
+                                cockleFilePdfsPrintedSuccessfully.ToList(),
+                                len_of_cover != null ? (int)len_of_cover : -1,
+                                TypeOfBindEnum.ProgramDecidesByPageCount);
+
+                        // add imposed files to list of cocklefilepdf files
+                        if (createImposedPdfiTextSharp.ImposedFilesCreated.All(x => System.IO.File.Exists(x.FullName)))
+                        {
+                            createImposedPdfiTextSharp.ImposedFilesCreated.ForEach(f =>
+                            {
+                                cockleFilePdfsPrintedSuccessfully.Add(
+                                    new CockleFilePdf(
+                                        f.FullName,
+                                        filesSelectedForConversion.First().Attorney,
+                                        filesSelectedForConversion.First().TicketNumber,
+                                        SourceFileTypeEnum.Imposed_Cover_and_Brief,
+                                        "pdf",
+                                        null));
+                            });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (null != createImposedPdfiTextSharp
+                                && null != createImposedPdfiTextSharp.ImposedFilesCreated
+                                && createImposedPdfiTextSharp.ImposedFilesCreated.Count > 0)
+                        {
+                            createImposedPdfiTextSharp.ImposedFilesCreated.ForEach(x => System.IO.File.Delete(x.FullName));
+
+                            foreach (var imposed_file in createImposedPdfiTextSharp.ImposedFilesCreated)
+                            {
+                                if (cockleFilePdfsPrintedSuccessfully.Contains(imposed_file))
+                                {
+                                    cockleFilePdfsPrintedSuccessfully.Remove(imposed_file);
+                                }
+                            }
+                        }
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+
+                    // 2. combine files into single pdf & create combined files of brief & appendix
+                    Models.MergePdf.CreateMergedPDFAcrobat createMergedPdfAcrobat = null;
+                    CockleFilePdf mergedCockleFile = null;
+                    try
+                    {
+                        createMergedPdfAcrobat = new Models.MergePdf.CreateMergedPDFAcrobat(
+                            cockleFilePdfsPrintedSuccessfully, typeOfCombinedPdf: Models.MergePdf.TypeOfCombinedPdf.All, centerPdf: true);
+
+                        // add combined file to list of cocklefilepdf files
+                        if (System.IO.File.Exists(createMergedPdfAcrobat.CombinedPdfFilename))
+                        {
+                            mergedCockleFile =
+                                new CockleFilePdf(
+                                    createMergedPdfAcrobat.CombinedPdfFilename,
+                                    filesSelectedForConversion.First().Attorney,
+                                    filesSelectedForConversion.First().TicketNumber,
+                                    SourceFileTypeEnum.Combined_Pdf,
+                                    "pdf",
+                                    null);
+                            cockleFilePdfsPrintedSuccessfully.Add(mergedCockleFile);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (null != createMergedPdfAcrobat
+                                && !string.IsNullOrEmpty(createMergedPdfAcrobat.CombinedPdfFilename)
+                                && System.IO.File.Exists(createMergedPdfAcrobat.CombinedPdfFilename))
+                        {
+                            System.IO.File.Delete(createMergedPdfAcrobat.CombinedPdfFilename);
+                        }
+                        if (null != mergedCockleFile
+                            && cockleFilePdfsPrintedSuccessfully.Contains(mergedCockleFile))
+                        {
+                            cockleFilePdfsPrintedSuccessfully.Remove(mergedCockleFile);
+                        }
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    Models.MergePdf.CreateMergedPDFAcrobat createMergedBrief_PdfAcrobat = null;
+                    CockleFilePdf mergedCockleFile_Brief = null;
+                    Models.MergePdf.CreateMergedPDFAcrobat createMergedAppendix_PdfAcrobat = null;
+                    CockleFilePdf mergedCockleFile_Appendix = null;
+                    try
+                    {
+                        var app_files = cockleFilePdfsPrintedSuccessfully
+                                .Where(x => x.FileType == SourceFileTypeEnum.App_Index
+                                || x.FileType == SourceFileTypeEnum.App_File
+                                || x.FileType == SourceFileTypeEnum.App_Foldout
+                                || x.FileType == SourceFileTypeEnum.App_ZFold)
+                                .ToList();
+
+
+                        // if no appendix files, skip creating separate combined pdfs
+                        if (app_files.Count > 0)
+                        {
+                            createMergedAppendix_PdfAcrobat = new Models.MergePdf.CreateMergedPDFAcrobat(
+                                app_files, Models.MergePdf.TypeOfCombinedPdf.Appendix, centerPdf: true);
+                            // add combined file to list of cocklefilepdf files
+                            if (System.IO.File.Exists(createMergedAppendix_PdfAcrobat.CombinedPdfFilename))
+                            {
+                                mergedCockleFile_Appendix =
+                                    new CockleFilePdf(
+                                        createMergedAppendix_PdfAcrobat.CombinedPdfFilename,
+                                        filesSelectedForConversion.First().Attorney,
+                                        filesSelectedForConversion.First().TicketNumber,
+                                        SourceFileTypeEnum.Combined_Pdf,
+                                        "pdf",
+                                        null);
+                                cockleFilePdfsPrintedSuccessfully.Add(mergedCockleFile_Appendix);
+                            }
+
+                            var brief_files = cockleFilePdfsPrintedSuccessfully
+                                .Where(x => x.FileType == SourceFileTypeEnum.Cover
+                                || x.FileType == SourceFileTypeEnum.InsideCv
+                                || x.FileType == SourceFileTypeEnum.Motion
+                                || x.FileType == SourceFileTypeEnum.Index
+                                || x.FileType == SourceFileTypeEnum.Brief
+                                || x.FileType == SourceFileTypeEnum.Brief_Foldout
+                                || x.FileType == SourceFileTypeEnum.Brief_ZFold)
+                                .ToList();
+
+                            createMergedBrief_PdfAcrobat = new Models.MergePdf.CreateMergedPDFAcrobat(
+                                brief_files, Models.MergePdf.TypeOfCombinedPdf.Brief, centerPdf: true);
+                            // add combined file to list of cocklefilepdf files
+                            if (System.IO.File.Exists(createMergedBrief_PdfAcrobat.CombinedPdfFilename))
+                            {
+                                mergedCockleFile_Brief =
+                                    new CockleFilePdf(
+                                        createMergedBrief_PdfAcrobat.CombinedPdfFilename,
+                                        filesSelectedForConversion.First().Attorney,
+                                        filesSelectedForConversion.First().TicketNumber,
+                                        SourceFileTypeEnum.Combined_Pdf,
+                                        "pdf",
+                                        null);
+                                cockleFilePdfsPrintedSuccessfully.Add(mergedCockleFile_Brief);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (null != createMergedBrief_PdfAcrobat
+                            && !string.IsNullOrEmpty(createMergedBrief_PdfAcrobat.CombinedPdfFilename)
+                            && System.IO.File.Exists(createMergedBrief_PdfAcrobat.CombinedPdfFilename))
+                        {
+                            System.IO.File.Delete(createMergedBrief_PdfAcrobat.CombinedPdfFilename);
+                        }
+                        if (null != createMergedAppendix_PdfAcrobat
+                            && !string.IsNullOrEmpty(createMergedAppendix_PdfAcrobat.CombinedPdfFilename)
+                            && System.IO.File.Exists(createMergedAppendix_PdfAcrobat.CombinedPdfFilename))
+                        {
+                            System.IO.File.Delete(createMergedAppendix_PdfAcrobat.CombinedPdfFilename);
+                        }
+                        if (null != mergedCockleFile_Brief
+                            && cockleFilePdfsPrintedSuccessfully.Contains(mergedCockleFile_Brief))
+                        {
+                            cockleFilePdfsPrintedSuccessfully.Remove(mergedCockleFile_Brief);
+                        }
+                        if (null != mergedCockleFile_Appendix
+                            && cockleFilePdfsPrintedSuccessfully.Contains(mergedCockleFile_Appendix))
+                        {
+                            cockleFilePdfsPrintedSuccessfully.Remove(mergedCockleFile_Appendix);
+                        }
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                }
+                #endregion
+
+                return cockleFilePdfsPrintedSuccessfully;
+            });
+            if (exceptionThrownInAwait)
+            {
+                throw new OperationCanceledException();
+            }
+            return filesToReturnFromTask;
+
+        }
         private async Task<List<CockleFilePdf>> executePdfConversion(
             IProgress<string> progress,
             CancellationToken cancellationToken,

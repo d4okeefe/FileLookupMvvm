@@ -3,6 +3,9 @@ using FileSearchMvvm.Models.CockleTypes;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System;
+using System.Threading;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using System.Collections.Generic;
 
 namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
 {
@@ -32,25 +35,25 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             #region populate recent search terms
             UserSearchTerms = new ObservableCollection<string>();
 
-            if(null == Properties.Settings.Default.RecentSearchTerms)
+            if (null == Properties.Settings.Default.RecentSearchTerms)
             {
-                for(var i = 0; i < 6; i++) { UserSearchTerms.Add(""); }
+                for (var i = 0; i < 6; i++) { UserSearchTerms.Add(""); }
             }
-            else if(Properties.Settings.Default.RecentSearchTerms.Equals(""))
+            else if (Properties.Settings.Default.RecentSearchTerms.Equals(""))
             {
-                for(var i = 0; i < 6; i++) { UserSearchTerms.Add(""); }
+                for (var i = 0; i < 6; i++) { UserSearchTerms.Add(""); }
             }
             else
             {
                 var orig = Properties.Settings.Default.RecentSearchTerms.Split(',');
                 var origCount = 0;
-                foreach(var o in orig)
+                foreach (var o in orig)
                 {
-                    if(origCount == 6) { break; }
+                    if (origCount == 6) { break; }
                     UserSearchTerms.Add(o);
                     origCount++;
                 }
-                while(UserSearchTerms.Count() < 6) { UserSearchTerms.Add(""); }
+                while (UserSearchTerms.Count() < 6) { UserSearchTerms.Add(""); }
             }
             #endregion
 
@@ -103,9 +106,64 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             #endregion
         }
 
-        private void convertWordFilesOffline(object o)
+        private async void convertWordFilesOffline(object o)
         {
-            throw new NotImplementedException();
+            IsConvertingToPdf = true;
+            var convertProgress = new Progress<string>(reportProgress);
+            convertCancelTokenSource = new CancellationTokenSource();
+
+
+            List<CockleFile> selected_files = new List<CockleFile>();
+            
+            if (o.Equals("ConvertAllWordFiles"))
+            {
+                selected_files = WordFilesInScratch.ToList();
+                
+            }
+            else if (o.Equals("ConvertSelectedWordFiles"))
+            {
+                if (null == SelectedPdfFiles || SelectedPdfFiles.Count() == 0) return;
+                var docx_files_selected_as_pdf = SelectedPdfFiles.Where(x => x.Filename.EndsWith(".docx")).ToList();
+                selected_files = new List<CockleFile>();
+                docx_files_selected_as_pdf.ForEach(x =>
+                {
+                    selected_files.Add(new CockleFile(x.FullName));
+                });
+            }
+
+            if (null == selected_files || selected_files.Count() == 0) return;
+
+            try
+            {
+                // HERE EXCEPTION !!!
+                var _filesConverting =
+                    await executePdfConversionOffline(
+                        convertProgress,
+                        convertCancelTokenSource.Token,
+                        selected_files);
+                FilesConvertedToPdf = new ObservableCollection<CockleFilePdf>(_filesConverting);
+                UpdateLabel += $"\n{FilesConvertedToPdf.Count} file{(FilesConvertedToPdf.Count == 1 ? "" : "s")} created";
+            }
+            catch (OperationCanceledException ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                var iConvertProgress = convertProgress as IProgress<string>;
+                iConvertProgress.Report("Conversion cancelled");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                var iConvertProgress = convertProgress as IProgress<string>;
+                iConvertProgress.Report("Error trying to convert files");
+            }
+            finally
+            {
+                convertCancelTokenSource.Dispose();
+                IsConvertingToPdf = false;
+            }
+
+
+
         }
 
         private bool canConvertWordFilesOffline(object o)
@@ -130,19 +188,19 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             {
                 var low_pg = 1;
                 var high_pg = 1;
-                if(!string.IsNullOrEmpty(PdfPageToExtract_First))
+                if (!string.IsNullOrEmpty(PdfPageToExtract_First))
                 {
                     bool l, h;
                     int r;
                     l = int.TryParse(PdfPageToExtract_First, out r);
-                    if(l)
+                    if (l)
                     {
                         low_pg = r;
                     }
-                    if(!string.IsNullOrEmpty(PdfPageToExtract_Last))
+                    if (!string.IsNullOrEmpty(PdfPageToExtract_Last))
                     {
                         h = int.TryParse(PdfPageToExtract_Last, out r);
-                        if(h && r > low_pg)
+                        if (h && r > low_pg)
                         {
                             high_pg = r;
                         }
@@ -155,7 +213,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
 
                 // test nums in pdf
                 var page_count = new iTextSharp.text.pdf.PdfReader(SelectedPdfFile.FullName).NumberOfPages;
-                if(low_pg > page_count || high_pg > page_count)
+                if (low_pg > page_count || high_pg > page_count)
                 {
                     throw new Exception("Page numbers incorrect");
                 }
@@ -180,12 +238,12 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 });
 
                 // try to move file to correct folder
-                if(System.IO.File.Exists(scratch_file_name))
+                if (System.IO.File.Exists(scratch_file_name))
                 {
                     System.IO.File.Move(scratch_file_name, atty_dir_file_name);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 UpdateLabelPdf = ex.Message;
             }
@@ -206,7 +264,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             {
                 var opened = doc.Open(selectedPdfFile.FullName);
 
-                if(opened)
+                if (opened)
                 {
                     object js_object = doc.GetJSObject();
                     Type js_type = js_object.GetType();
@@ -219,7 +277,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                         null, js_object, js_param);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 UpdateLabelPdf = ex.Message;
             }
