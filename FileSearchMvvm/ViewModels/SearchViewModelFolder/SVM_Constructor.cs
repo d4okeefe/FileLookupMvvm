@@ -30,7 +30,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             CenteredCoverType = CenteredCoverType.NotSet;
 
             // test for Javascript, and replace if necessary
-            var acro_js_is_working = Models.Utilities.AcrobatJS.AreAcrobatJavascriptsInPlace();
+            //var acro_js_is_working = Models.Utilities.AcrobatJS.AreAcrobatJavascriptsInPlace();
 
             #region populate recent search terms
             UserSearchTerms = new ObservableCollection<string>();

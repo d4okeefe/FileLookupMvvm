@@ -20,7 +20,7 @@ namespace FileSearchMvvm.Models.PdfCreation
         public ConvertToPdfa(CockleFilePdf cockleFilePdf, bool center)
         {
             if (null == cockleFilePdf) { throw new Exception("Original file is null."); }
-            if (!Models.Utilities.AcrobatJS.AreAcrobatJavascriptsInPlace()) { throw new Exception(); }
+            //if (!Models.Utilities.AcrobatJS.AreAcrobatJavascriptsInPlace()) { throw new Exception(); }
 
             OriginalCockleFilePdf = cockleFilePdf;
 
@@ -113,7 +113,7 @@ namespace FileSearchMvvm.Models.PdfCreation
         public ConvertToPdfa(CockleFilePdf cockleFilePdf)
         {
             if (null == cockleFilePdf) { throw new Exception("Original file is null."); }
-            if (!Models.Utilities.AcrobatJS.AreAcrobatJavascriptsInPlace()) { throw new Exception(); }
+            //if (!Models.Utilities.AcrobatJS.AreAcrobatJavascriptsInPlace()) { throw new Exception(); }
 
             OriginalCockleFilePdf = cockleFilePdf;
 

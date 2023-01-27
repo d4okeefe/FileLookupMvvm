@@ -12,7 +12,7 @@ namespace FileSearchMvvm.Models.Imposition
 
         public NUpCircuitCourtCoverOn11x19(CockleFilePdf _selectedFile)
         {
-            if(!Utilities.AcrobatJS.AreAcrobatJavascriptsInPlace()) { throw new Exception(); }
+            //if(!Utilities.AcrobatJS.AreAcrobatJavascriptsInPlace()) { throw new Exception(); }
 
             selectedPdfFile = _selectedFile;
 
