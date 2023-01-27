@@ -16,8 +16,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         private bool cover49PicaPdf;
         private bool cover50PicaPdf;
         private bool cover51PicaPdf;
-        private bool coverLengthBookletSelectorIsVisible;
-        private bool coverLengthSelectorIsVisible;
+        private bool centerPdfSelectorIsVisible;
         private bool hasCover_CenterPdf;
         private bool hasCoverPdf;
         private bool isCameraReadyCenteredPdf;

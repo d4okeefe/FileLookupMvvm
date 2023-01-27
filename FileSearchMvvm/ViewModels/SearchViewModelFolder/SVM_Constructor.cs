@@ -109,7 +109,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         private async void convertWordFilesOffline(object o)
         {
             IsConvertingToPdf = true;
-            var convertProgress = new Progress<string>(reportProgress);
+            var convertProgress = new Progress<string>(reportProgressPdf);
             convertCancelTokenSource = new CancellationTokenSource();
 
 
@@ -142,7 +142,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                         convertCancelTokenSource.Token,
                         selected_files);
                 FilesConvertedToPdf = new ObservableCollection<CockleFilePdf>(_filesConverting);
-                UpdateLabel += $"\n{FilesConvertedToPdf.Count} file{(FilesConvertedToPdf.Count == 1 ? "" : "s")} created";
+                UpdateLabelPdf += $"\n{FilesConvertedToPdf.Count} file{(FilesConvertedToPdf.Count == 1 ? "" : "s")} created";
             }
             catch (OperationCanceledException ex)
             {
@@ -168,7 +168,9 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
 
         private bool canConvertWordFilesOffline(object o)
         {
-            return WordFilesInScratch != null && WordFilesInScratch.Count() > 0;
+            return !isConvertingToPdf 
+                && WordFilesInScratch != null 
+                && WordFilesInScratch.Count() > 0;
         }
 
         private bool canExtractPagesFromPdfDocument()

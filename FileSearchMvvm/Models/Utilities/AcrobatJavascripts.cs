@@ -69,7 +69,8 @@ namespace FileSearchMvvm.Models.Utilities
             try
             {
                 var username = System.Environment.UserName;
-                if(username == "Printer") { username = "todd"; } // weird here, but necessary
+                // removed this fix 1/26/2023
+                // if(username == "Printer") { username = "todd"; } // weird here, but necessary
                 var local_script_file = @"C:\Users\" + username + @"\AppData\Roaming\Adobe\Acrobat\Privileged\10.0\JavaScripts\local_scripts.js";
                 var local_script = string.Empty;
                 System.Reflection.Assembly _assembly = System.Reflection.Assembly.GetExecutingAssembly();

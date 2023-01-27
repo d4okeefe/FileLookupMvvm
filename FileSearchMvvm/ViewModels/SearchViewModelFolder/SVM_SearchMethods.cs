@@ -32,6 +32,10 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         {
             UpdateLabel = value;
         }
+        private void reportProgressPdf(string value)
+        {
+            UpdateLabelPdf = value;
+        }
         private void cancelSearchOrConvert()
         {
             try

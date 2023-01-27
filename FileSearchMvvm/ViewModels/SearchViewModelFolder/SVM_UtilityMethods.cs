@@ -1,5 +1,6 @@
 ﻿using FileSearchMvvm.Models.CockleTypes;
 using FileSearchMvvm.Models.Utilities;
+using FileSearchMvvm.Views.ModalOverlays;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -273,10 +274,9 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         private void closeModalContentOverlay()
         {
             CameraReadyFileSelectorIsVisible = false;
-            CoverLengthSelectorIsVisible = false;
+            CenterPdfSelectorIsVisible = false;
             ScratchFolderSelectorIsVisible = false;
             SetFileOrderModalIsVisible = false;
-            CoverLengthSelectorIsVisible = false;
             SelectImpositionDetailsIsVisible = false;
             SpecialImpositionsOverlayIsVisible = false;
             ModalOverlayIsVisible = false;

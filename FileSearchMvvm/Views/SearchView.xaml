@@ -319,8 +319,8 @@
                         <Grid Visibility="{Binding SetFileOrderModalIsVisible, Converter={StaticResource BoolToVis}}">
                             <modaloverlays:SetFileOrder />
                         </Grid>
-                        <Grid Visibility="{Binding CoverLengthSelectorIsVisible, Converter={StaticResource BoolToVis}}">
-                            <modaloverlays:CoverLengthSelector />
+                        <Grid Visibility="{Binding CenterPdfSelectorIsVisible, Converter={StaticResource BoolToVis}}">
+                            <modaloverlays:CenterPdfSelector />
                         </Grid>
                         <Grid Visibility="{Binding ScratchFolderSelectorIsVisible, Converter={StaticResource BoolToVis}}">
                             <modaloverlays:ScratchFolderSelector />

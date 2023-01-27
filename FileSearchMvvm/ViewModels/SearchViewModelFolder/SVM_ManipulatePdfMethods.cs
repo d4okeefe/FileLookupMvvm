@@ -371,7 +371,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
 
                 // call modal overlay
                 ModalOverlayIsVisible = true;
-                CoverLengthSelectorIsVisible = true;
+                CenterPdfSelectorIsVisible = true;
             }
             catch (Exception ex)
             {
@@ -399,7 +399,7 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
         private async void executeCenterPdf()
         {
             ModalOverlayIsVisible = false;
-            CoverLengthSelectorIsVisible = false;
+            CenterPdfSelectorIsVisible = false;
             UpdateLabelPdf = "";
             try
             {

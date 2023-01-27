@@ -505,21 +505,12 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
                 RaisePropertyChanged();
             }
         }
-        public bool CoverLengthBookletSelectorIsVisible
+        public bool CenterPdfSelectorIsVisible
         {
-            get { return coverLengthBookletSelectorIsVisible; }
+            get { return centerPdfSelectorIsVisible; }
             set
             {
-                coverLengthBookletSelectorIsVisible = value;
-                RaisePropertyChanged();
-            }
-        }
-        public bool CoverLengthSelectorIsVisible
-        {
-            get { return coverLengthSelectorIsVisible; }
-            set
-            {
-                coverLengthSelectorIsVisible = value;
+                centerPdfSelectorIsVisible = value;
                 RaisePropertyChanged();
             }
         }

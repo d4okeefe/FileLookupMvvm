@@ -213,3 +213,5 @@ C:\Users\d4oke\source\repos\FileLookupMvvm\FileSearchMvvm\obj\Debug\FileSearchMv
 C:\Users\d4oke\source\repos\FileLookupMvvm\FileSearchMvvm\obj\Debug\FileSearchMvvm.csproj.CopyComplete
 C:\Users\d4oke\source\repos\FileLookupMvvm\FileSearchMvvm\obj\Debug\Views\ModalOverlays\OffNetworkConversionsModal.g.cs
 C:\Users\d4oke\source\repos\FileLookupMvvm\FileSearchMvvm\obj\Debug\Views\ModalOverlays\OffNetworkConversionsModal.baml
+C:\Users\d4oke\source\repos\FileLookupMvvm\FileSearchMvvm\obj\Debug\Views\ModalOverlays\CenterPdfSelector.g.cs
+C:\Users\d4oke\source\repos\FileLookupMvvm\FileSearchMvvm\obj\Debug\Views\ModalOverlays\CenterPdfSelector.baml
