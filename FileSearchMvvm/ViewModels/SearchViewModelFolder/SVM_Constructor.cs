@@ -118,7 +118,6 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             if (o.Equals("ConvertAllWordFiles"))
             {
                 selected_files = WordFilesInScratch.ToList();
-                
             }
             else if (o.Equals("ConvertSelectedWordFiles"))
             {
@@ -132,6 +131,9 @@ namespace FileSearchMvvm.ViewModels.SearchViewModelFolder
             }
 
             if (null == selected_files || selected_files.Count() == 0) return;
+            FilesConvertedToPdf.Clear();
+            FilesConvertedToPdf_Ordered.Clear();
+            WordFilesInScratch.Clear();
 
             try
             {
