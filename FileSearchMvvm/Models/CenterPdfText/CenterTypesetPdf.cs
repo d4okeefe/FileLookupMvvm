@@ -20,7 +20,7 @@ namespace FileSearchMvvm.Models.CenterPdfText
             ViewModels.SearchViewModelFolder.CenteredCoverType _courtBriefSizeDoc =
             ViewModels.SearchViewModelFolder.CenteredCoverType.Letter)
         {
-            if(!Models.Utilities.AcrobatJS.AreAcrobatJavascriptsInPlace()) { throw new Exception(); }
+            //if(!Models.Utilities.AcrobatJS.AreAcrobatJavascriptsInPlace()) { throw new Exception(); }
 
             selectedPdfFile = _selectedFile;
             hasCover = null == _cv_len ? false : true;
